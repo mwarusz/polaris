@@ -359,7 +359,10 @@ class IcosahedralMeshStep(SphericalBaseStep):
         self.opts.mesh_dims = 2
 
         self.opts.optm_iter = 512
-        self.opts.optm_qtol = 1e-6
+        self.opts.optm_qtol = 1e-9
+        scvt_opt = False
+        if scvt_opt:
+            self.opts.optm_kern = 'cvt+dqdx'
 
     def setup(self):
         """
