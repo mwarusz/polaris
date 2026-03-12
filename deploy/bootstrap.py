@@ -151,7 +151,9 @@ def main():  # noqa: C901
                     f'source {conda_base}/etc/profile.d/conda.sh && '
                     f'conda activate {conda_env_name} && '
                     f'cd ../build_mache/mache && '
-                    f'conda install -y --file spec-file.txt && '
+                    #f'conda install -y --file spec-file.txt && '
+                    f'pixi workspace export conda-explicit-spec -e py313 -p linux-64 . && '
+                    f'conda install -y --file py313_linux-64_conda_spec.txt && '
                     f'python -m pip install --no-deps --no-build-isolation .'
                 )
                 check_call(commands, logger=options['logger'])

@@ -78,7 +78,9 @@ def main():
             f'git clone -b {args.mache_branch} '
             f'git@github.com:{args.mache_fork}.git mache && '
             f'cd mache && '
-            f'conda install -y --file spec-file.txt && '
+            #f'conda install -y --file spec-file.txt && '
+            f'pixi workspace export conda-explicit-spec -e py314 -p linux-64 . && '
+            f'conda install -y --file py314_linux-64_conda_spec.txt && '
             f'python -m pip install --no-deps --no-build-isolation .'
         )
 
