@@ -184,7 +184,7 @@ class Forward(OceanModelStep):
                 )
                 seconds = 1.0
 
-            output_interval = get_time_interval_string(seconds=seconds)
+            output_interval = get_time_interval_string(days=10)
 
         time_integrator = config.get('baroclinic_channel', 'time_integrator')
         time_integrator_map = dict([('RK4', 'RungeKutta4')])
