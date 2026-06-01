@@ -41,7 +41,7 @@ class Default(Task):
             min_tasks=None,
             openmp_threads=1,
             resolution=resolution,
-            run_time_steps=3,
+            run_time_steps=500,
             graph_target=f'{init.path}/culled_graph.info',
         )
         self.add_step(forward_step)
