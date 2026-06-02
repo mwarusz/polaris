@@ -56,6 +56,7 @@ Omega:
     SSHTendencyEnable: false
   Tracers:
     Base: [Temperature, Salinity]
+    Debug: []
   IOStreams:
     InitialVertCoord:
       UsePointerFile: false
