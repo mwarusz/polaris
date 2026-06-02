@@ -166,8 +166,8 @@ class Forward(OceanModelStep):
             )
             output_freq = int(output_freq)
         else:
-            output_freq = 1
-            output_freq_units = 'minutes'
+            output_freq = 12
+            output_freq_units = 'hours'
 
         # Get output interval for mpas-ocean
         output_interval = '0000-00-00_00:00:01'
