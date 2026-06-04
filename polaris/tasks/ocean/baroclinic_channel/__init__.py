@@ -17,7 +17,7 @@ def add_baroclinic_channel_tasks(component):
     component : polaris.tasks.ocean.Ocean
         the ocean component that the tasks will be added to
     """
-    for resolution in [10.0, 4.0, 1.0]:
+    for resolution in [10.0, 4.0, 2.0, 1.0]:
         resdir = resolution_to_string(resolution)
         resdir = f'planar/baroclinic_channel/{resdir}'
 
