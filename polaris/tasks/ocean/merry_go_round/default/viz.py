@@ -70,6 +70,16 @@ class Viz(OceanIOStep):
             filename='output.nc',
             work_dir_target=f'{forward.path}/output.nc',
         )
+        model = self.config.get('ocean', 'model')
+        # TODO: remove as soon as Omega no longer needs this file
+        if model == 'omega':
+            res = forward.name.split('_')[1]
+            self.add_input_file(
+                filename='coeffs.nc',
+                target=f'{res}_coeffs.nc',
+                database_component='ocean',
+                database='merry_go_round',
+            )
 
     def run(self):
         """
@@ -99,8 +109,15 @@ class Viz(OceanIOStep):
         ds_mesh = self.open_model_dataset('mesh.nc', config)
         ds_init = self.open_model_dataset('init.nc', config)
         ds_vert_coord = self.open_vert_coord_dataset(ds_init)
-        ds = self.open_model_dataset('output.nc', config, decode_times=False)
-
+        ds = self.open_model_dataset(
+            'output.nc',
+            config,
+            mesh_filename='mesh.nc',
+            vert_filename='vert_coord.nc',
+            coeffs_filename='coeffs.nc',
+            decode_times=False,
+            reconstruct_variables=['normalVelocity'],
+        )
         x_min = ds_mesh.xVertex.min().values
         x_max = ds_mesh.xVertex.max().values
         y_mid = ds_mesh.yCell.median().values
@@ -127,7 +144,6 @@ class Viz(OceanIOStep):
         )
 
         vert_velocity = ds.vertVelocityTop.isel(Time=tidx)
-
         tracer_exact = ds_init.tracer1.isel(Time=0)
         tracer_model = ds.tracer1.isel(Time=tidx)
         tracer_error = tracer_model - tracer_exact
