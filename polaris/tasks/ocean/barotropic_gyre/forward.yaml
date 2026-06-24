@@ -36,7 +36,7 @@ mpas-ocean:
 
   streams:
     forcing:
-      filename_template: init.nc
+      filename_template: forcing.nc
       input_interval: initial_only
       type: input
       contents:
@@ -70,8 +70,16 @@ Omega:
       Mode: read
       Contents:
       - State
-      - SfcStressZonal
-      - SfcStressMeridional
+    Forcing:
+      UsePointerFile: false
+      Filename: forcing.nc
+      Mode: read
+      Precision: double
+      Freq: 1
+      FreqUnits: days
+      UseStartEnd: false
+      Contents:
+      - Forcing
     History:
       UsePointerFile: false
       Filename: output.nc
