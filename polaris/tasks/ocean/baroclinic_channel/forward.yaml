@@ -93,6 +93,7 @@ Omega:
       - State
       - Tracers
     RestartRead:
+      UsePointerFile: false
       Filename: {{ restart_filename }}
       Mode: read
       Precision: double

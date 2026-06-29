@@ -40,6 +40,7 @@ class Restart(Task):
             component=component,
             resolution=resolution,
             run_time_steps=2,
+            restart_time_steps=1,
             name='full_run',
             indir=self.subdir,
         )
@@ -50,9 +51,9 @@ class Restart(Task):
             resolution=resolution,
             run_time_steps=1,
             start_time_steps=1,
+            restart_time_steps=1,
             name='restart_run',
             indir=self.subdir,
-            do_restart=True,
         )
         restart.add_dependency(full, full.name)
         self.add_step(restart)
