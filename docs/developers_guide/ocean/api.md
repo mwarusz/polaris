@@ -49,9 +49,6 @@
 
    restart.Restart
 
-   restart.restart_step.RestartStep
-   restart.restart_step.RestartStep.dynamic_model_config
-
    threads.Threads
 
    rpe.Rpe
