@@ -118,7 +118,7 @@
     <span class="n">GeometricFeatures</span><span class="p">,</span>
     <span class="n">read_feature_collection</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">mpas_tools.io</span><span class="w"> </span><span class="kn">import</span> <span class="n">write_netcdf</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">mpas_tools.io</span><span class="w"> </span><span class="kn">import</span> <span class="n">open_dataset</span><span class="p">,</span> <span class="n">write_netcdf</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">mpas_tools.logging</span><span class="w"> </span><span class="kn">import</span> <span class="n">check_call</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">mpas_tools.mesh.mask</span><span class="w"> </span><span class="kn">import</span> <span class="n">compute_mpas_flood_fill_mask</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">mpas_tools.ocean.coastline_alteration</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
@@ -377,7 +377,7 @@
             <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
                 <span class="s1">&#39;Applying critical land transect mask to ocean cull mask.&#39;</span>
             <span class="p">)</span>
-            <span class="n">ds_crit</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="n">crit_land_filename</span><span class="p">)</span>
+            <span class="n">ds_crit</span> <span class="o">=</span> <span class="n">open_dataset</span><span class="p">(</span><span class="n">crit_land_filename</span><span class="p">)</span>
             <span class="n">preserve_land</span> <span class="o">=</span> <span class="n">ds_crit</span><span class="o">.</span><span class="n">regionCellMasks</span><span class="o">.</span><span class="n">isel</span><span class="p">(</span><span class="n">nRegions</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span>
             <span class="n">cull_mask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">logical_or</span><span class="p">(</span><span class="n">cull_mask</span><span class="p">,</span> <span class="n">preserve_land</span><span class="p">)</span>
 
@@ -387,7 +387,7 @@
             <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
                 <span class="s1">&#39;Applying critical ocean transect mask to ocean cull mask.&#39;</span>
             <span class="p">)</span>
-            <span class="n">ds_crit</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="n">crit_ocean_filename</span><span class="p">)</span>
+            <span class="n">ds_crit</span> <span class="o">=</span> <span class="n">open_dataset</span><span class="p">(</span><span class="n">crit_ocean_filename</span><span class="p">)</span>
             <span class="n">preserve_ocean</span> <span class="o">=</span> <span class="n">ds_crit</span><span class="o">.</span><span class="n">regionCellMasks</span><span class="o">.</span><span class="n">isel</span><span class="p">(</span><span class="n">nRegions</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span>
             <span class="n">cull_mask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">logical_and</span><span class="p">(</span>
                 <span class="n">cull_mask</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">logical_not</span><span class="p">(</span><span class="n">preserve_ocean</span><span class="p">)</span>
@@ -468,11 +468,11 @@
             <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
                 <span class="s1">&#39;Applying critical ocean transect mask to land cull mask.&#39;</span>
             <span class="p">)</span>
-            <span class="n">ds_crit</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="n">crit_ocean_filename</span><span class="p">)</span>
+            <span class="n">ds_crit</span> <span class="o">=</span> <span class="n">open_dataset</span><span class="p">(</span><span class="n">crit_ocean_filename</span><span class="p">)</span>
             <span class="n">preserve_ocean</span> <span class="o">=</span> <span class="n">ds_crit</span><span class="o">.</span><span class="n">regionCellMasks</span><span class="o">.</span><span class="n">isel</span><span class="p">(</span><span class="n">nRegions</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span>
             <span class="n">cull_mask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">logical_or</span><span class="p">(</span><span class="n">cull_mask</span><span class="p">,</span> <span class="n">preserve_ocean</span><span class="p">)</span>
 
-        <span class="n">ds_ocean_no_cavity_cull_mask</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span>
+        <span class="n">ds_ocean_no_cavity_cull_mask</span> <span class="o">=</span> <span class="n">open_dataset</span><span class="p">(</span>
             <span class="s1">&#39;ocean_no_cavities_cull_mask.nc&#39;</span>
         <span class="p">)</span>
 
@@ -523,7 +523,7 @@
 
         <span class="n">gf</span> <span class="o">=</span> <span class="n">GeometricFeatures</span><span class="p">()</span>
 
-        <span class="n">ds_base_mesh</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="s1">&#39;base_mesh.nc&#39;</span><span class="p">)</span>
+        <span class="n">ds_base_mesh</span> <span class="o">=</span> <span class="n">open_dataset</span><span class="p">(</span><span class="s1">&#39;base_mesh.nc&#39;</span><span class="p">)</span>
 
         <span class="n">fc_crit_land_transects</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">define_critical_land_transects</span><span class="p">(</span><span class="n">gf</span><span class="p">)</span>
 
@@ -553,7 +553,7 @@
             <span class="p">]</span>
             <span class="n">check_call</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">logger</span><span class="o">=</span><span class="n">logger</span><span class="p">)</span>
 
-            <span class="n">ds_all</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="n">nc_filename</span><span class="p">)</span>
+            <span class="n">ds_all</span> <span class="o">=</span> <span class="n">open_dataset</span><span class="p">(</span><span class="n">nc_filename</span><span class="p">)</span>
 
             <span class="c1"># combine into a single field</span>
             <span class="n">preserve</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">where</span><span class="p">(</span>
@@ -597,7 +597,7 @@
                 <span class="n">netcdf_engine</span><span class="p">,</span>
             <span class="p">]</span>
             <span class="n">check_call</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">logger</span><span class="o">=</span><span class="n">logger</span><span class="p">)</span>
-            <span class="n">ds_all</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="n">nc_filename</span><span class="p">)</span>
+            <span class="n">ds_all</span> <span class="o">=</span> <span class="n">open_dataset</span><span class="p">(</span><span class="n">nc_filename</span><span class="p">)</span>
 
             <span class="n">ds_widened</span> <span class="o">=</span> <span class="n">widen_transect_edge_masks</span><span class="p">(</span>
                 <span class="n">ds_all</span><span class="p">,</span> <span class="n">ds_base_mesh</span><span class="p">,</span> <span class="n">latitude_threshold</span><span class="o">=</span><span class="n">latitude_threshold</span>
@@ -628,9 +628,9 @@
         <span class="n">logger</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">logger</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Creating ocean cull mask.&#39;</span><span class="p">)</span>
 
-        <span class="n">ds_base_mesh</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="s1">&#39;base_mesh.nc&#39;</span><span class="p">)</span>
+        <span class="n">ds_base_mesh</span> <span class="o">=</span> <span class="n">open_dataset</span><span class="p">(</span><span class="s1">&#39;base_mesh.nc&#39;</span><span class="p">)</span>
 
-        <span class="n">ds_topo</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="s1">&#39;topography_unsmoothed.nc&#39;</span><span class="p">)</span>
+        <span class="n">ds_topo</span> <span class="o">=</span> <span class="n">open_dataset</span><span class="p">(</span><span class="s1">&#39;topography_unsmoothed.nc&#39;</span><span class="p">)</span>
         <span class="n">ocean_frac</span> <span class="o">=</span> <span class="n">ds_topo</span><span class="o">.</span><span class="n">ocean_frac</span>
         <span class="n">cull_mask</span> <span class="o">=</span> <span class="n">ocean_frac</span> <span class="o">&lt;</span> <span class="mf">0.5</span>
 
@@ -657,12 +657,12 @@
         <span class="n">land_ice_max_latitude</span> <span class="o">=</span> <span class="n">section</span><span class="o">.</span><span class="n">getfloat</span><span class="p">(</span><span class="s1">&#39;land_ice_max_latitude&#39;</span><span class="p">)</span>
         <span class="n">land_ice_min_fraction</span> <span class="o">=</span> <span class="n">section</span><span class="o">.</span><span class="n">getfloat</span><span class="p">(</span><span class="s1">&#39;land_ice_min_fraction&#39;</span><span class="p">)</span>
 
-        <span class="n">ds_base_mesh</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="s1">&#39;base_mesh.nc&#39;</span><span class="p">)</span>
+        <span class="n">ds_base_mesh</span> <span class="o">=</span> <span class="n">open_dataset</span><span class="p">(</span><span class="s1">&#39;base_mesh.nc&#39;</span><span class="p">)</span>
 
-        <span class="n">ds_topo</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="s1">&#39;topography_unsmoothed.nc&#39;</span><span class="p">)</span>
+        <span class="n">ds_topo</span> <span class="o">=</span> <span class="n">open_dataset</span><span class="p">(</span><span class="s1">&#39;topography_unsmoothed.nc&#39;</span><span class="p">)</span>
         <span class="n">land_ice_frac</span> <span class="o">=</span> <span class="n">ds_topo</span><span class="o">.</span><span class="n">ice_frac</span>
 
-        <span class="n">ds_ocean_cull_mask</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="s1">&#39;ocean_cull_mask.nc&#39;</span><span class="p">)</span>
+        <span class="n">ds_ocean_cull_mask</span> <span class="o">=</span> <span class="n">open_dataset</span><span class="p">(</span><span class="s1">&#39;ocean_cull_mask.nc&#39;</span><span class="p">)</span>
         <span class="n">ocean_cull_mask</span> <span class="o">=</span> <span class="n">ds_ocean_cull_mask</span><span class="o">.</span><span class="n">oceanCullMask</span> <span class="o">&gt;</span> <span class="mi">0</span>
 
         <span class="n">land_ice_present</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_antarctic_land_ice_ownership</span><span class="p">(</span>
@@ -709,12 +709,12 @@
         <span class="n">latitude_threshold</span> <span class="o">=</span> <span class="n">section</span><span class="o">.</span><span class="n">getfloat</span><span class="p">(</span><span class="s1">&#39;sea_ice_latitude_threshold&#39;</span><span class="p">)</span>
         <span class="n">iterations</span> <span class="o">=</span> <span class="n">section</span><span class="o">.</span><span class="n">getint</span><span class="p">(</span><span class="s1">&#39;land_locked_cell_iterations&#39;</span><span class="p">)</span>
 
-        <span class="n">ds_base_mesh</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="s1">&#39;base_mesh.nc&#39;</span><span class="p">)</span>
+        <span class="n">ds_base_mesh</span> <span class="o">=</span> <span class="n">open_dataset</span><span class="p">(</span><span class="s1">&#39;base_mesh.nc&#39;</span><span class="p">)</span>
 
-        <span class="n">ds_ocean_cull_mask</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="s1">&#39;ocean_cull_mask.nc&#39;</span><span class="p">)</span>
+        <span class="n">ds_ocean_cull_mask</span> <span class="o">=</span> <span class="n">open_dataset</span><span class="p">(</span><span class="s1">&#39;ocean_cull_mask.nc&#39;</span><span class="p">)</span>
         <span class="n">ocean_cull_mask</span> <span class="o">=</span> <span class="n">ds_ocean_cull_mask</span><span class="o">.</span><span class="n">oceanCullMask</span> <span class="o">&gt;</span> <span class="mi">0</span>
 
-        <span class="n">ds_land_ice_mask</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="s1">&#39;land_ice_mask_preliminary.nc&#39;</span><span class="p">)</span>
+        <span class="n">ds_land_ice_mask</span> <span class="o">=</span> <span class="n">open_dataset</span><span class="p">(</span><span class="s1">&#39;land_ice_mask_preliminary.nc&#39;</span><span class="p">)</span>
         <span class="n">land_ice_mask</span> <span class="o">=</span> <span class="n">ds_land_ice_mask</span><span class="o">.</span><span class="n">landIceMask</span> <span class="o">&gt;</span> <span class="mi">0</span>
 
         <span class="c1"># Exclude all land ice, not just the grounded ice</span>
@@ -780,12 +780,12 @@
         <span class="n">logger</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">logger</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Creating land cull mask.&#39;</span><span class="p">)</span>
 
-        <span class="n">ds_topo</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="s1">&#39;topography_unsmoothed.nc&#39;</span><span class="p">)</span>
+        <span class="n">ds_topo</span> <span class="o">=</span> <span class="n">open_dataset</span><span class="p">(</span><span class="s1">&#39;topography_unsmoothed.nc&#39;</span><span class="p">)</span>
         <span class="n">land_frac</span> <span class="o">=</span> <span class="n">ds_topo</span><span class="o">.</span><span class="n">land_frac</span>
         <span class="n">cull_mask</span> <span class="o">=</span> <span class="n">land_frac</span> <span class="o">&lt;</span> <span class="mf">0.5</span>
 
         <span class="n">cull_mask</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">refine_land_cull_mask</span><span class="p">(</span>
-            <span class="n">ds_base_mesh</span><span class="o">=</span><span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="s1">&#39;base_mesh.nc&#39;</span><span class="p">),</span>
+            <span class="n">ds_base_mesh</span><span class="o">=</span><span class="n">open_dataset</span><span class="p">(</span><span class="s1">&#39;base_mesh.nc&#39;</span><span class="p">),</span>
             <span class="n">ds_topo</span><span class="o">=</span><span class="n">ds_topo</span><span class="p">,</span>
             <span class="n">cull_mask</span><span class="o">=</span><span class="n">cull_mask</span><span class="p">,</span>
         <span class="p">)</span>
@@ -803,12 +803,12 @@
         <span class="n">logger</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">logger</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Combining land and ocean cull masks.&#39;</span><span class="p">)</span>
 
-        <span class="n">ds_ocean_cull_mask</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="s1">&#39;ocean_cull_mask.nc&#39;</span><span class="p">)</span>
-        <span class="n">ds_ocean_no_cavities_cull_mask</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span>
+        <span class="n">ds_ocean_cull_mask</span> <span class="o">=</span> <span class="n">open_dataset</span><span class="p">(</span><span class="s1">&#39;ocean_cull_mask.nc&#39;</span><span class="p">)</span>
+        <span class="n">ds_ocean_no_cavities_cull_mask</span> <span class="o">=</span> <span class="n">open_dataset</span><span class="p">(</span>
             <span class="s1">&#39;ocean_no_cavities_cull_mask.nc&#39;</span>
         <span class="p">)</span>
-        <span class="n">ds_land_cull_mask</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="s1">&#39;land_cull_mask.nc&#39;</span><span class="p">)</span>
-        <span class="n">ds_land_ice_mask</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="s1">&#39;land_ice_mask.nc&#39;</span><span class="p">)</span>
+        <span class="n">ds_land_cull_mask</span> <span class="o">=</span> <span class="n">open_dataset</span><span class="p">(</span><span class="s1">&#39;land_cull_mask.nc&#39;</span><span class="p">)</span>
+        <span class="n">ds_land_ice_mask</span> <span class="o">=</span> <span class="n">open_dataset</span><span class="p">(</span><span class="s1">&#39;land_ice_mask.nc&#39;</span><span class="p">)</span>
 
         <span class="n">ds_masks</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">()</span>
         <span class="n">ds_masks</span><span class="p">[</span><span class="s1">&#39;oceanCullMask&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ds_ocean_cull_mask</span><span class="o">.</span><span class="n">oceanCullMask</span>
