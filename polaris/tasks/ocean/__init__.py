@@ -199,6 +199,7 @@ class Ocean(Component):
             mpas_to_omega_vars = {
                 'layerThickness': 'PseudoThickness',
                 'restingThickness': 'RefPseudoThickness',
+                'vertAleTransportTop': 'TotalVerticalPseudoVelocity',
                 'vertVelocityTop': 'VerticalPseudoVelocity',
             }
             for mpas_var, omega_var in mpas_to_omega_vars.items():
@@ -217,7 +218,10 @@ class Ocean(Component):
                                 and mpas_var == 'layerThickness'
                             ):
                                 ds['SpecVol'] = spec_vol
-                    elif mpas_var == 'vertVelocityTop':
+                    elif (
+                        mpas_var == 'vertVelocityTop'
+                        or mpas_var == 'vertAleTransportTop'
+                    ):
                         if (
                             'SpecVol' not in ds.keys()
                             and 'layerThickness' in ds.keys()
