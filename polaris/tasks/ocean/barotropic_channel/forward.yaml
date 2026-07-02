@@ -137,5 +137,6 @@ Omega:
       - State
       - Eos
       - SshCell
+      - VerticalPseudoVelocity
       FileFreq: 9999
       FileFreqUnits: years
