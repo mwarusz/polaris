@@ -73,12 +73,9 @@ class Viz(OceanIOStep):
         model = self.config.get('ocean', 'model')
         # TODO: remove as soon as Omega no longer needs this file
         if model == 'omega':
-            res = forward.name.split('_')[1]
             self.add_input_file(
                 filename='coeffs.nc',
-                target=f'{res}_coeffs.nc',
-                database_component='ocean',
-                database='merry_go_round',
+                work_dir_target=f'{forward.path}/coeffs.nc',
             )
 
     def run(self):
