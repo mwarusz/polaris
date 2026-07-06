@@ -76,6 +76,7 @@ class Rpe(Task):
             name = f'nu_{nu:g}'
             step = Forward(
                 component=component,
+                init=init,
                 name=name,
                 indir=self.subdir,
                 ntasks=None,

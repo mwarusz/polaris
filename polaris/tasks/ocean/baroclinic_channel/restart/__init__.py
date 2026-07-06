@@ -38,22 +38,26 @@ class Restart(Task):
 
         full = Forward(
             component=component,
+            init=init,
             resolution=resolution,
             run_time_steps=2,
             restart_time_steps=1,
             name='full_run',
             indir=self.subdir,
+            graph_target=f'{init.path}/culled_graph.info',
         )
         self.add_step(full)
 
         restart = Forward(
             component=component,
+            init=init,
             resolution=resolution,
             run_time_steps=1,
             start_time_steps=1,
             restart_time_steps=1,
             name='restart_run',
             indir=self.subdir,
+            graph_target=f'{init.path}/culled_graph.info',
         )
         restart.add_dependency(full, full.name)
         self.add_step(restart)

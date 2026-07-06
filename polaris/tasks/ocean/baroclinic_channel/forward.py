@@ -29,6 +29,7 @@ class Forward(OceanModelStep):
         self,
         component,
         resolution,
+        init,
         name='forward',
         subdir=None,
         indir=None,
@@ -39,7 +40,7 @@ class Forward(OceanModelStep):
         run_time_steps=None,
         start_time_steps=None,
         restart_time_steps=None,
-        graph_target='graph.info',
+        graph_target='culled_graph.info',
     ):
         """
         Create a new task
@@ -52,8 +53,11 @@ class Forward(OceanModelStep):
         resolution : km
             The resolution of the task in km
 
+        init : polaris.step
+            The init step for the task
+
         name : str
-            the name of the task
+            the name of the step
 
         subdir : str, optional
             the subdirectory for the step.  If neither this nor ``indir``
@@ -116,9 +120,13 @@ class Forward(OceanModelStep):
         # make sure output is double precision
         self.add_yaml_file('polaris.ocean.config', 'output.yaml')
 
-        self.add_horiz_mesh_input_file(target='../../init/culled_mesh.nc')
-        self.add_vert_coord_input_file(target='../../init/vert_coord.nc')
-        self.add_init_input_file(target='../../init/init.nc')
+        self.add_horiz_mesh_input_file(
+            work_dir_target=f'{init.path}/culled_mesh.nc'
+        )
+        self.add_vert_coord_input_file(
+            work_dir_target=f'{init.path}/vert_coord.nc'
+        )
+        self.add_init_input_file(work_dir_target=f'{init.path}/init.nc')
 
         self.add_output_file(
             filename='output.nc',
@@ -198,7 +206,8 @@ class Forward(OceanModelStep):
         btr_dt_per_km = config.getfloat('baroclinic_channel', 'btr_dt_per_km')
         btr_dt = btr_dt_per_km * self.resolution
         mpaso_options = {
-            'config_btr_dt': time.strftime('%H:%M:%S', time.gmtime(btr_dt))
+            'config_do_restart': False,
+            'config_btr_dt': time.strftime('%H:%M:%S', time.gmtime(btr_dt)),
         }
 
         # Set dt and default run duration, which may be changed below
@@ -247,7 +256,7 @@ class Forward(OceanModelStep):
         if model == 'mpas-ocean':
             if output_freq_units == 'seconds':
                 seconds = output_freq
-            if output_freq_units == 'minutes':
+            elif output_freq_units == 'minutes':
                 seconds = output_freq * 60
             elif output_freq_units == 'hours':
                 seconds = output_freq * 3600
@@ -284,7 +293,7 @@ class Forward(OceanModelStep):
         if self.do_restart:
             init_freq = 'never'
             restart_start_time = start_str
-            mpaso_options['config_do_restart'] = 'True'
+            mpaso_options['config_do_restart'] = True
         else:
             init_freq = 'OnStartup'
             # The restart start time must be >= simulation start time
