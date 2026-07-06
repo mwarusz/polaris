@@ -204,7 +204,7 @@ class Ocean(Component):
             }
             for mpas_var, omega_var in mpas_to_omega_vars.items():
                 if mpas_var in ds.keys() and omega_var not in ds.keys():
-                    if 'Thickness' in mpas_var:
+                    if mpas_var in ['layerThickness', 'restingThickness']:
                         pseudothickness, spec_vol = pseudothickness_from_ds(
                             ds, config=config, src_var_name=mpas_var
                         )
@@ -218,10 +218,10 @@ class Ocean(Component):
                                 and mpas_var == 'layerThickness'
                             ):
                                 ds['SpecVol'] = spec_vol
-                    elif (
-                        mpas_var == 'vertVelocityTop'
-                        or mpas_var == 'vertAleTransportTop'
-                    ):
+                    elif mpas_var in [
+                        'vertVelocityTop',
+                        'vertAleTransportTop',
+                    ]:
                         if (
                             'SpecVol' not in ds.keys()
                             and 'layerThickness' in ds.keys()
