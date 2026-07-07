@@ -39,6 +39,7 @@ class Init(OceanIOStep):
             base_mesh_filename='base_mesh.nc',
             graph_filename='culled_graph.info',
         )
+        self.add_output_file(filename='forcing.nc')
 
     def run(self):
         """
@@ -103,10 +104,14 @@ class Init(OceanIOStep):
         # set the wind stress forcing
         wind_stress_zonal = u_wind * xr.ones_like(ds.xCell)
         wind_stress_meridional = v_wind * xr.ones_like(ds.xCell)
-        ds['windStressZonal'] = wind_stress_zonal.expand_dims(
+
+        ds_forcing = xr.Dataset()
+        ds_forcing['windStressZonal'] = wind_stress_zonal.expand_dims(
             dim='Time', axis=0
         )
-        ds['windStressMeridional'] = wind_stress_meridional.expand_dims(
-            dim='Time', axis=0
+        ds_forcing['windStressMeridional'] = (
+            wind_stress_meridional.expand_dims(dim='Time', axis=0)
         )
+        self.write_model_dataset(ds_forcing, 'forcing.nc', config)
+
         self.write_initial_state_dataset(ds, 'init.nc', config)
