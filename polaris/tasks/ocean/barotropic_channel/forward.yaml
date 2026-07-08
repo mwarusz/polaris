@@ -103,7 +103,7 @@ Omega:
       Mode: read
       Precision: double
       Freq: 1
-      FreqUnits: days
+      FreqUnits: OnStartup
       UseStartEnd: false
       Contents:
       - Forcing
