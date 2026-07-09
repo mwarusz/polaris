@@ -252,6 +252,10 @@ def _resolve_scheduler_fields(config, system):
 def _get_compiler(config):
     if config is None:
         return None
+    if config.has_option('build', 'compiler'):
+        val = config.get('build', 'compiler')
+        if val:
+            return val
     if config.has_option('deploy', 'compiler'):
         val = config.get('deploy', 'compiler')
         return val or None
