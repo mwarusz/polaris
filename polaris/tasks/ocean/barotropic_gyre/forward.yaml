@@ -66,11 +66,6 @@ Omega:
     TracerVertAdvTendencyEnable: false
     TracerDiffTendencyEnable : false
     TracerHyperDiffTendencyEnable : false
-  VertMix:
-    Convective:
-      Enable: false
-    Shear:
-      Enable: false
   Advection:
     FluxThicknessType: Center
   IOStreams:

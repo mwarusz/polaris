@@ -44,11 +44,6 @@ Omega:
     VelHyperDiffTendencyEnable: false
     UseCustomTendency: true
     ManufacturedSolutionTendency: true
-  VertMix:
-    Convective:
-      Enable: false
-    Shear:
-      Enable: false
   IOStreams:
     InitialState:
       UsePointerFile: false

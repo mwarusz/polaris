@@ -79,11 +79,6 @@ Omega:
     TracerHyperDiffTendencyEnable : false
   Advection:
     VerticalTracerFluxLimiterEnable: false
-  VertMix:
-    Convective:
-      Enable: false
-    Shear:
-      Enable: false
   Tracers:
     Debug: [Debug1, Debug2, Debug3]
   IOStreams:
