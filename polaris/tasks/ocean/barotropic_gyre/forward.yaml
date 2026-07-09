@@ -59,11 +59,7 @@ mpas-ocean:
 
 Omega:
   Tendencies:
-    ThicknessVertAdvTendencyEnable: false
-    PVTendencyEnable: false
-    KETendencyEnable: false
     TracerHorzAdvTendencyEnable : false
-    TracerVertAdvTendencyEnable: false
     TracerDiffTendencyEnable : false
     TracerHyperDiffTendencyEnable : false
   Advection:
