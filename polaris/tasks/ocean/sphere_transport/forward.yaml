@@ -11,6 +11,7 @@ ocean:
     config_disable_vel_pgrad: true
     config_disable_vel_vmix: true
     config_disable_tr_vmix: true
+    config_disable_vel_vadv: true
 
 mpas-ocean:
   run_modes:
