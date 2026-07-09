@@ -9,6 +9,8 @@ ocean:
     config_horiz_tracer_adv_order: 3
   debug:
     config_disable_vel_pgrad: true
+    config_disable_vel_vmix: true
+    config_disable_tr_vmix: true
 
 mpas-ocean:
   run_modes:
@@ -69,12 +71,19 @@ Omega:
     ThicknessFluxTendencyEnable : true
     PVTendencyEnable : false
     KETendencyEnable : false
-    SSHTendencyEnable : false
+    VelocityVertAdvTendencyEnable: false
     VelDiffTendencyEnable: false
     VelHyperDiffTendencyEnable: false
     TracerHorzAdvTendencyEnable : true
     TracerDiffTendencyEnable : false
     TracerHyperDiffTendencyEnable : false
+  Advection:
+    VerticalTracerFluxLimiterEnable: false
+  VertMix:
+    Convective:
+      Enable: false
+    Shear:
+      Enable: false
   Tracers:
     Debug: [Debug1, Debug2, Debug3]
   IOStreams:

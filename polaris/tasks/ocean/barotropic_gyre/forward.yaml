@@ -14,6 +14,8 @@ ocean:
     config_use_bulk_wind_stress: true
   debug:
     config_disable_vel_explicit_bottom_drag: true
+    config_disable_vel_vmix: true
+    config_disable_tr_vmix: true
 
 mpas-ocean:
   run_modes:
@@ -57,9 +59,18 @@ mpas-ocean:
 
 Omega:
   Tendencies:
+    ThicknessVertAdvTendencyEnable: false
+    PVTendencyEnable: false
+    KETendencyEnable: false
     TracerHorzAdvTendencyEnable : false
+    TracerVertAdvTendencyEnable: false
     TracerDiffTendencyEnable : false
     TracerHyperDiffTendencyEnable : false
+  VertMix:
+    Convective:
+      Enable: false
+    Shear:
+      Enable: false
   Advection:
     FluxThicknessType: Center
   IOStreams:

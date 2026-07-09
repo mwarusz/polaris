@@ -9,6 +9,9 @@ ocean:
     config_mom_del2: 1.5e6
   hmix_del4:
     config_mom_del4: 5.e13
+  debug:
+    config_disable_vel_vmix: true
+    config_disable_tr_vmix: true
 
 mpas-ocean:
   bottom_drag:
@@ -19,7 +22,6 @@ mpas-ocean:
      config_use_manufactured_solution: true
   debug:
     config_compute_active_tracer_budgets: false
-    config_disable_vel_vmix: true
     config_disable_tr_all_tend: true
   streams:
     restart: {}
@@ -42,6 +44,11 @@ Omega:
     VelHyperDiffTendencyEnable: false
     UseCustomTendency: true
     ManufacturedSolutionTendency: true
+  VertMix:
+    Convective:
+      Enable: false
+    Shear:
+      Enable: false
   IOStreams:
     InitialState:
       UsePointerFile: false
