@@ -71,7 +71,6 @@ Omega:
     ThicknessFluxTendencyEnable : true
     PVTendencyEnable : false
     KETendencyEnable : false
-    VelocityVertAdvTendencyEnable: false
     VelDiffTendencyEnable: false
     VelHyperDiffTendencyEnable: false
     TracerHorzAdvTendencyEnable : true
