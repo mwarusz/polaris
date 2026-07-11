@@ -116,7 +116,7 @@ spaces.  These are the test numbers given by {ref}`dev-polaris-list`.
 `polaris setup` requires a few basic pieces of information to be able to set
 up a task.  These include places to download and cache some data files
 used in the tasks and the location where the MPAS model has been or will be
-built.  There are a few ways to to supply these.  The `-m` or `--machine`
+built.  There are a few ways to supply these.  The `-m` or `--machine`
 option is used to tell `polaris setup` which supported machine you're running
 on (leave this off if you're working on an "unknown" machine).  See
 {ref}`dev-polaris-list` above for how to list the supported machines.

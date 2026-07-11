@@ -332,10 +332,9 @@ component executable and required files are not found there, Polaris builds
 automatically.  A manual build is still supported and can be useful for
 advanced workflows, but should generally be treated as an opt-in alternative.
 
-If `-p` or `-f` is provided pointing to a location where the model has not
-yet been built, Polaris cannot infer whether you want MPAS-Ocean or Omega, so
-you should always supply `--model` when the model type cannot be auto-detected
-from an existing build at that path.
+If `-p` or `-f` points to a location where the model has not yet been built,
+Polaris cannot infer whether you want MPAS-Ocean or Omega.  In such cases,
+supply `--model` to specify the model type explicitly.
 
 Common optional build flags for this automated workflow:
 
@@ -365,7 +364,7 @@ polaris suite -c ocean -t nightly \
 You can direct Polaris to a specific directory for the component build using
 `-p` on the command line or `component_path` in a config file.  Polaris
 checks whether the component is already built at that location.  If found, it
-is reused.  If not, Polaris builds there automatically.
+is reused.  If not, Polaris builds it automatically at that location.
 
 1. provide it directly on the command line with `-p`, e.g.
 
