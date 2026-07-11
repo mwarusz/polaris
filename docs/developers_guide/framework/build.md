@@ -115,7 +115,7 @@ You can trigger these builders directly from the CLI by passing build flags to
 
 - `--build`: Force a build during setup, even when the component executable is
   already present at the build path.  Without this flag, Polaris checks
-  whether the component is already built at `--component_path`; if not found,
+  whether the component is already built at `-p`/`--component_path`; if not found,
   it builds automatically.  Use `--build` when you want to rebuild after
   updating source code.
 - `--branch <path>`: Path to the MPAS-Ocean (E3SM-Project) or Omega checkout.
@@ -136,7 +136,7 @@ You can trigger these builders directly from the CLI by passing build flags to
 
 Defaults and directories:
 
-- The build output directory used by Polaris (`--component_path`) defaults to
+- The build output directory used by Polaris (`-p`/`--component_path`) defaults to
   the `build` subdirectory of the base work directory you pass with `-w` (for
   both MPAS-Ocean and Omega).
 - MPAS-Ocean copies files required by Polaris into this build directory so you

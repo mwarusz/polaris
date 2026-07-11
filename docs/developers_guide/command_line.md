@@ -192,11 +192,11 @@ See {ref}`dev-setup` for more about the underlying framework.
 ### Automatic component builds (MPAS-Ocean and Omega)
 
 For the `ocean` component, Polaris automatically checks for an existing build
-at `--component_path` and builds the component if it is not already present.
+at `-p`/`--component_path` and builds the component if it is not already present.
 The following flags give additional control over this behavior:
 
 - `--build`: Force a build during setup, even when the component executable is
-   already present at `--component_path`.  Without this flag, Polaris checks
+   already present at `-p`/`--component_path`.  Without this flag, Polaris checks
    whether the component is already built at the path; if found, setup proceeds
    without rebuilding.  Use `--build` when you want to rebuild after updating
    source code.
@@ -220,7 +220,7 @@ The following flags give additional control over this behavior:
 
 Defaults and paths:
 
-- Build output directory (`--component_path`) defaults to the `build`
+- Build output directory (`-p`/`--component_path`) defaults to the `build`
   subdirectory of the base work directory you pass with `-w` for both
   MPAS-Ocean and Omega.
 - Generated build scripts are saved to:
@@ -286,7 +286,7 @@ comparison with `-b` or `--baseline_dir`.  If supplied, each task in the
 suite that includes {ref}`dev-validation` will be validated against the
 previous run in the baseline.  The same auto-build behavior described in
 {ref}`dev-polaris-setup` applies: if the component is not found at
-`--component_path`, Polaris builds it automatically.
+`-p`/`--component_path`, Polaris builds it automatically.
 
 The flags `--copy_executable` and `--clean_tasks` are the same as in
 {ref}`dev-polaris-setup`.
