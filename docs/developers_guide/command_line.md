@@ -115,21 +115,28 @@ spaces.  These are the test numbers given by {ref}`dev-polaris-list`.
 
 `polaris setup` requires a few basic pieces of information to be able to set
 up a task.  These include places to download and cache some data files
-used in the tasks and the location where you built the MPAS model.  There
-are a few ways to to supply these.  The `-m` or `--machine` option is used
-to tell `polaris setup` which supported machine you're running on (leave this
-off if you're working on an "unknown" machine).  See {ref}`dev-polaris-list`
-above for how to list the supported machines.
+used in the tasks and the location where the MPAS model has been or will be
+built.  There are a few ways to to supply these.  The `-m` or `--machine`
+option is used to tell `polaris setup` which supported machine you're running
+on (leave this off if you're working on an "unknown" machine).  See
+{ref}`dev-polaris-list` above for how to list the supported machines.
 
-You can supply the directory where you have built the MPAS component with the
-`-p` or `--component_path` flag.  This can be a relative or absolute path.  The
-default for the `landice` component is
+You can supply the directory where the MPAS component is or will be built with
+the `-p` or `--component_path` flag.  This can be a relative or absolute path.
+The default for the `landice` component is
 `e3sm_submodules/MALI-Dev/components/mpas-albany-landice`.
 For the `ocean` component, the default value of `component_path` comes from the
 ocean configuration file; by default, both MPAS-Ocean and Omega use the
-`build` subdirectory of the base work directory supplied with `-w` when Polaris
-manages the build for you. If you build MPAS-Ocean or Omega in a different
-location, supply that directory explicitly with `-p` or via a config file.
+`build` subdirectory of the base work directory supplied with `-w`.  If you
+use MPAS-Ocean or Omega in a different location, supply that directory
+explicitly with `-p` or via a config file.
+
+When `-p` is provided for the `ocean` component, Polaris first checks whether
+the component executable and required files are already present in that
+directory.  If found, they are used as-is and no build is performed.  If the
+component is not found there, Polaris builds automatically at that location.
+Use `--build` only when you want to force a rebuild of an already-built
+component (for example, after updating source code).
 
 You can also supply a config file with config options pointing to the
 directories for cached data files, the location of the MPAS component, and much
@@ -184,11 +191,15 @@ See {ref}`dev-setup` for more about the underlying framework.
 
 ### Automatic component builds (MPAS-Ocean and Omega)
 
-`polaris setup` can build the component for you when you pass `--build`. These
-flags configure the build:
+For the `ocean` component, Polaris automatically checks for an existing build
+at `--component_path` and builds the component if it is not already present.
+The following flags give additional control over this behavior:
 
-- `--build`: Enable automatic build. If not set, Polaris assumes the component
-   has already been built at `--component_path`.
+- `--build`: Force a build during setup, even when the component executable is
+   already present at `--component_path`.  Without this flag, Polaris checks
+   whether the component is already built at the path; if found, setup proceeds
+   without rebuilding.  Use `--build` when you want to rebuild after updating
+   source code.
 - `--branch <path>`: Path to the development branch to build (E3SM-Project for
    MPAS-Ocean or Omega repo for Omega). Defaults to the corresponding submodule
    inside your Polaris branch (e.g., `e3sm_submodules/E3SM-Project` or
@@ -267,13 +278,15 @@ the name of the suite.  These are the options listed when you run
 work directory with `-w` or `--work_dir`.
 
 As in {ref}`dev-polaris-setup`, you can supply one or more of: a supported
-machine with `-m` or `--machine`; a path where you build MPAS model via
-`-p` or `--component_path`; and a config file containing config options to
-override the defaults with `-f` or `--config_file`.  As with
+machine with `-m` or `--machine`; a path where the MPAS model is or will be
+built via `-p` or `--component_path`; and a config file containing config
+options to override the defaults with `-f` or `--config_file`.  As with
 {ref}`dev-polaris-setup`, you may optionally supply a baseline directory for
 comparison with `-b` or `--baseline_dir`.  If supplied, each task in the
 suite that includes {ref}`dev-validation` will be validated against the
-previous run in the baseline.
+previous run in the baseline.  The same auto-build behavior described in
+{ref}`dev-polaris-setup` applies: if the component is not found at
+`--component_path`, Polaris builds it automatically.
 
 The flags `--copy_executable` and `--clean_tasks` are the same as in
 {ref}`dev-polaris-setup`.
@@ -282,8 +295,9 @@ See {ref}`dev-suite` for more about the underlying framework.
 
 ### Automatic component builds in suites
 
-`polaris suite` accepts the same build flags as `polaris setup` and will build
-the requested component before setting up the suite when `--build` is given:
+`polaris suite` applies the same auto-build logic and accepts the same build
+flags as `polaris setup`. The component is built automatically if not already
+present, and `--build` forces a rebuild even when already present:
 
 - `--build`, `--branch`, `--clean_build`, `--quiet_build`, `--cmake_flags`,
   `--debug`

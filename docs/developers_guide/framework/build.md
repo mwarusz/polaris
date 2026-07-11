@@ -113,7 +113,11 @@ or tweak the generated scripts before running them yourself.
 You can trigger these builders directly from the CLI by passing build flags to
 {ref}`dev-polaris-setup` or {ref}`dev-polaris-suite`:
 
-- `--build`: Build the selected component before setup.
+- `--build`: Force a build during setup, even when the component executable is
+  already present at the build path.  Without this flag, Polaris checks
+  whether the component is already built at `--component_path`; if not found,
+  it builds automatically.  Use `--build` when you want to rebuild after
+  updating source code.
 - `--branch <path>`: Path to the MPAS-Ocean (E3SM-Project) or Omega checkout.
   Defaults to the corresponding submodule within your Polaris branch. Required
   submodules will be checked out automatically during the build.
