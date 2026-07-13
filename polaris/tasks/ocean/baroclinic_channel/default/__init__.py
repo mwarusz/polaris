@@ -37,6 +37,7 @@ class Default(Task):
         forward_step = Forward(
             component=component,
             indir=self.subdir,
+            init=init,
             ntasks=None,
             min_tasks=None,
             openmp_threads=1,
@@ -47,8 +48,9 @@ class Default(Task):
         self.add_step(forward_step)
 
         long_forward_step = Forward(
-            name='long_forward',
             component=component,
+            init=init,
+            name='long_forward',
             indir=self.subdir,
             ntasks=None,
             min_tasks=None,

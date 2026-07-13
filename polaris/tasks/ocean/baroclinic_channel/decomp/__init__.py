@@ -41,6 +41,7 @@ class Decomp(Task):
             self.add_step(
                 Forward(
                     component=component,
+                    init=init,
                     name=name,
                     indir=self.subdir,
                     ntasks=procs,
