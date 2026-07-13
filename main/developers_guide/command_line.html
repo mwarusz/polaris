@@ -217,20 +217,26 @@ the <code class="docutils literal notranslate"><span class="pre">-n</span></code
 spaces.  These are the test numbers given by <a class="reference internal" href="#dev-polaris-list"><span class="std std-ref">polaris list</span></a>.</p>
 <p><code class="docutils literal notranslate"><span class="pre">polaris</span> <span class="pre">setup</span></code> requires a few basic pieces of information to be able to set
 up a task.  These include places to download and cache some data files
-used in the tasks and the location where you built the MPAS model.  There
-are a few ways to to supply these.  The <code class="docutils literal notranslate"><span class="pre">-m</span></code> or <code class="docutils literal notranslate"><span class="pre">--machine</span></code> option is used
-to tell <code class="docutils literal notranslate"><span class="pre">polaris</span> <span class="pre">setup</span></code> which supported machine you’re running on (leave this
-off if you’re working on an “unknown” machine).  See <a class="reference internal" href="#dev-polaris-list"><span class="std std-ref">polaris list</span></a>
-above for how to list the supported machines.</p>
-<p>You can supply the directory where you have built the MPAS component with the
-<code class="docutils literal notranslate"><span class="pre">-p</span></code> or <code class="docutils literal notranslate"><span class="pre">--component_path</span></code> flag.  This can be a relative or absolute path.  The
-default for the <code class="docutils literal notranslate"><span class="pre">landice</span></code> component is
+used in the tasks and the location where the MPAS model has been or will be
+built.  There are a few ways to supply these.  The <code class="docutils literal notranslate"><span class="pre">-m</span></code> or <code class="docutils literal notranslate"><span class="pre">--machine</span></code>
+option is used to tell <code class="docutils literal notranslate"><span class="pre">polaris</span> <span class="pre">setup</span></code> which supported machine you’re running
+on (leave this off if you’re working on an “unknown” machine).  See
+<a class="reference internal" href="#dev-polaris-list"><span class="std std-ref">polaris list</span></a> above for how to list the supported machines.</p>
+<p>You can supply the directory where the MPAS component is or will be built with
+the <code class="docutils literal notranslate"><span class="pre">-p</span></code> or <code class="docutils literal notranslate"><span class="pre">--component_path</span></code> flag.  This can be a relative or absolute path.
+The default for the <code class="docutils literal notranslate"><span class="pre">landice</span></code> component is
 <code class="docutils literal notranslate"><span class="pre">e3sm_submodules/MALI-Dev/components/mpas-albany-landice</span></code>.
 For the <code class="docutils literal notranslate"><span class="pre">ocean</span></code> component, the default value of <code class="docutils literal notranslate"><span class="pre">component_path</span></code> comes from the
 ocean configuration file; by default, both MPAS-Ocean and Omega use the
-<code class="docutils literal notranslate"><span class="pre">build</span></code> subdirectory of the base work directory supplied with <code class="docutils literal notranslate"><span class="pre">-w</span></code> when Polaris
-manages the build for you. If you build MPAS-Ocean or Omega in a different
-location, supply that directory explicitly with <code class="docutils literal notranslate"><span class="pre">-p</span></code> or via a config file.</p>
+<code class="docutils literal notranslate"><span class="pre">build</span></code> subdirectory of the base work directory supplied with <code class="docutils literal notranslate"><span class="pre">-w</span></code>.  If you
+use MPAS-Ocean or Omega in a different location, supply that directory
+explicitly with <code class="docutils literal notranslate"><span class="pre">-p</span></code> or via a config file.</p>
+<p>When <code class="docutils literal notranslate"><span class="pre">-p</span></code> is provided for the <code class="docutils literal notranslate"><span class="pre">ocean</span></code> component, Polaris first checks whether
+the component executable and required files are already present in that
+directory.  If found, they are used as-is and no build is performed.  If the
+component is not found there, Polaris builds automatically at that location.
+Use <code class="docutils literal notranslate"><span class="pre">--build</span></code> only when you want to force a rebuild of an already-built
+component (for example, after updating source code).</p>
 <p>You can also supply a config file with config options pointing to the
 directories for cached data files, the location of the MPAS component, and much
 more (see <a class="reference internal" href="../users_guide/config_files.html#config-files"><span class="std std-ref">Config Files</span></a> and <a class="reference internal" href="#dev-polaris-setup"><span class="std std-ref">polaris setup</span></a>).  Point to your config
@@ -274,11 +280,15 @@ rebuilding the model.  Use <code class="docutils literal notranslate"><span clas
 <p>See <a class="reference internal" href="framework/commands.html#dev-setup"><span class="std std-ref">setup module</span></a> for more about the underlying framework.</p>
 <section id="automatic-component-builds-mpas-ocean-and-omega">
 <h3>Automatic component builds (MPAS-Ocean and Omega)<a class="headerlink" href="#automatic-component-builds-mpas-ocean-and-omega" title="Link to this heading"></a></h3>
-<p><code class="docutils literal notranslate"><span class="pre">polaris</span> <span class="pre">setup</span></code> can build the component for you when you pass <code class="docutils literal notranslate"><span class="pre">--build</span></code>. These
-flags configure the build:</p>
+<p>For the <code class="docutils literal notranslate"><span class="pre">ocean</span></code> component, Polaris automatically checks for an existing build
+at <code class="docutils literal notranslate"><span class="pre">-p</span></code>/<code class="docutils literal notranslate"><span class="pre">--component_path</span></code> and builds the component if it is not already present.
+The following flags give additional control over this behavior:</p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">--build</span></code>: Enable automatic build. If not set, Polaris assumes the component
-has already been built at <code class="docutils literal notranslate"><span class="pre">--component_path</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--build</span></code>: Force a build during setup, even when the component executable is
+already present at <code class="docutils literal notranslate"><span class="pre">-p</span></code>/<code class="docutils literal notranslate"><span class="pre">--component_path</span></code>.  Without this flag, Polaris checks
+whether the component is already built at the path; if found, setup proceeds
+without rebuilding.  Use <code class="docutils literal notranslate"><span class="pre">--build</span></code> when you want to rebuild after updating
+source code.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">--branch</span> <span class="pre">&lt;path&gt;</span></code>: Path to the development branch to build (E3SM-Project for
 MPAS-Ocean or Omega repo for Omega). Defaults to the corresponding submodule
 inside your Polaris branch (e.g., <code class="docutils literal notranslate"><span class="pre">e3sm_submodules/E3SM-Project</span></code> or
@@ -299,7 +309,7 @@ Ocean adds <code class="docutils literal notranslate"><span class="pre">debug=TR
 </ul>
 <p>Defaults and paths:</p>
 <ul class="simple">
-<li><p>Build output directory (<code class="docutils literal notranslate"><span class="pre">--component_path</span></code>) defaults to the <code class="docutils literal notranslate"><span class="pre">build</span></code>
+<li><p>Build output directory (<code class="docutils literal notranslate"><span class="pre">-p</span></code>/<code class="docutils literal notranslate"><span class="pre">--component_path</span></code>) defaults to the <code class="docutils literal notranslate"><span class="pre">build</span></code>
 subdirectory of the base work directory you pass with <code class="docutils literal notranslate"><span class="pre">-w</span></code> for both
 MPAS-Ocean and Omega.</p></li>
 <li><p>Generated build scripts are saved to:</p>
@@ -355,20 +365,23 @@ the name of the suite.  These are the options listed when you run
 <code class="docutils literal notranslate"><span class="pre">polaris</span> <span class="pre">list</span> <span class="pre">--suites</span></code>. As with <a class="reference internal" href="#dev-polaris-setup"><span class="std std-ref">polaris setup</span></a>, you must supply a
 work directory with <code class="docutils literal notranslate"><span class="pre">-w</span></code> or <code class="docutils literal notranslate"><span class="pre">--work_dir</span></code>.</p>
 <p>As in <a class="reference internal" href="#dev-polaris-setup"><span class="std std-ref">polaris setup</span></a>, you can supply one or more of: a supported
-machine with <code class="docutils literal notranslate"><span class="pre">-m</span></code> or <code class="docutils literal notranslate"><span class="pre">--machine</span></code>; a path where you build MPAS model via
-<code class="docutils literal notranslate"><span class="pre">-p</span></code> or <code class="docutils literal notranslate"><span class="pre">--component_path</span></code>; and a config file containing config options to
-override the defaults with <code class="docutils literal notranslate"><span class="pre">-f</span></code> or <code class="docutils literal notranslate"><span class="pre">--config_file</span></code>.  As with
+machine with <code class="docutils literal notranslate"><span class="pre">-m</span></code> or <code class="docutils literal notranslate"><span class="pre">--machine</span></code>; a path where the MPAS model is or will be
+built via <code class="docutils literal notranslate"><span class="pre">-p</span></code> or <code class="docutils literal notranslate"><span class="pre">--component_path</span></code>; and a config file containing config
+options to override the defaults with <code class="docutils literal notranslate"><span class="pre">-f</span></code> or <code class="docutils literal notranslate"><span class="pre">--config_file</span></code>.  As with
 <a class="reference internal" href="#dev-polaris-setup"><span class="std std-ref">polaris setup</span></a>, you may optionally supply a baseline directory for
 comparison with <code class="docutils literal notranslate"><span class="pre">-b</span></code> or <code class="docutils literal notranslate"><span class="pre">--baseline_dir</span></code>.  If supplied, each task in the
 suite that includes <a class="reference internal" href="framework/validation.html#dev-validation"><span class="std std-ref">Validation</span></a> will be validated against the
-previous run in the baseline.</p>
+previous run in the baseline.  The same auto-build behavior described in
+<a class="reference internal" href="#dev-polaris-setup"><span class="std std-ref">polaris setup</span></a> applies: if the component is not found at
+<code class="docutils literal notranslate"><span class="pre">-p</span></code>/<code class="docutils literal notranslate"><span class="pre">--component_path</span></code>, Polaris builds it automatically.</p>
 <p>The flags <code class="docutils literal notranslate"><span class="pre">--copy_executable</span></code> and <code class="docutils literal notranslate"><span class="pre">--clean_tasks</span></code> are the same as in
 <a class="reference internal" href="#dev-polaris-setup"><span class="std std-ref">polaris setup</span></a>.</p>
 <p>See <a class="reference internal" href="framework/commands.html#dev-suite"><span class="std std-ref">suite module</span></a> for more about the underlying framework.</p>
 <section id="automatic-component-builds-in-suites">
 <h3>Automatic component builds in suites<a class="headerlink" href="#automatic-component-builds-in-suites" title="Link to this heading"></a></h3>
-<p><code class="docutils literal notranslate"><span class="pre">polaris</span> <span class="pre">suite</span></code> accepts the same build flags as <code class="docutils literal notranslate"><span class="pre">polaris</span> <span class="pre">setup</span></code> and will build
-the requested component before setting up the suite when <code class="docutils literal notranslate"><span class="pre">--build</span></code> is given:</p>
+<p><code class="docutils literal notranslate"><span class="pre">polaris</span> <span class="pre">suite</span></code> applies the same auto-build logic and accepts the same build
+flags as <code class="docutils literal notranslate"><span class="pre">polaris</span> <span class="pre">setup</span></code>. The component is built automatically if not already
+present, and <code class="docutils literal notranslate"><span class="pre">--build</span></code> forces a rebuild even when already present:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">--build</span></code>, <code class="docutils literal notranslate"><span class="pre">--branch</span></code>, <code class="docutils literal notranslate"><span class="pre">--clean_build</span></code>, <code class="docutils literal notranslate"><span class="pre">--quiet_build</span></code>, <code class="docutils literal notranslate"><span class="pre">--cmake_flags</span></code>,
 <code class="docutils literal notranslate"><span class="pre">--debug</span></code></p></li>

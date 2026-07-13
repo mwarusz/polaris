@@ -256,7 +256,11 @@ or tweak the generated scripts before running them yourself.</p>
 <p>You can trigger these builders directly from the CLI by passing build flags to
 <a class="reference internal" href="../command_line.html#dev-polaris-setup"><span class="std std-ref">polaris setup</span></a> or <a class="reference internal" href="../command_line.html#dev-polaris-suite"><span class="std std-ref">polaris suite</span></a>:</p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">--build</span></code>: Build the selected component before setup.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--build</span></code>: Force a build during setup, even when the component executable is
+already present at the build path.  Without this flag, Polaris checks
+whether the component is already built at <code class="docutils literal notranslate"><span class="pre">-p</span></code>/<code class="docutils literal notranslate"><span class="pre">--component_path</span></code>; if not found,
+it builds automatically.  Use <code class="docutils literal notranslate"><span class="pre">--build</span></code> when you want to rebuild after
+updating source code.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">--branch</span> <span class="pre">&lt;path&gt;</span></code>: Path to the MPAS-Ocean (E3SM-Project) or Omega checkout.
 Defaults to the corresponding submodule within your Polaris branch. Required
 submodules will be checked out automatically during the build.</p></li>
@@ -275,7 +279,7 @@ For MPAS-Ocean, this string is forwarded to <code class="docutils literal notran
 </ul>
 <p>Defaults and directories:</p>
 <ul class="simple">
-<li><p>The build output directory used by Polaris (<code class="docutils literal notranslate"><span class="pre">--component_path</span></code>) defaults to
+<li><p>The build output directory used by Polaris (<code class="docutils literal notranslate"><span class="pre">-p</span></code>/<code class="docutils literal notranslate"><span class="pre">--component_path</span></code>) defaults to
 the <code class="docutils literal notranslate"><span class="pre">build</span></code> subdirectory of the base work directory you pass with <code class="docutils literal notranslate"><span class="pre">-w</span></code> (for
 both MPAS-Ocean and Omega).</p></li>
 <li><p>MPAS-Ocean copies files required by Polaris into this build directory so you
