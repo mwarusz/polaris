@@ -43,7 +43,7 @@ mpas-ocean:
     restart:
       output_interval: 0000_01:00:00
     forcing:
-      filename_template: init.nc
+      filename_template: forcing.nc
       input_interval: initial_only
       type: input
       contents:
@@ -97,8 +97,16 @@ Omega:
       Contents:
       - State
       - Base
-      - SfcStressZonal
-      - SfcStressMeridional
+    Forcing:
+      UsePointerFile: false
+      Filename: forcing.nc
+      Mode: read
+      Precision: double
+      Freq: 1
+      FreqUnits: OnStartup
+      UseStartEnd: false
+      Contents:
+      - Forcing
     RestartRead:
       UsePointerFile: true
       PointerFilename: ocn.pointer

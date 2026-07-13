@@ -60,6 +60,7 @@ class Init(OceanIOStep):
             base_mesh_filename='base_mesh.nc',
             graph_filename='culled_graph.info',
         )
+        self.add_output_file(filename='forcing.nc')
 
     def run(self):
         """
@@ -134,12 +135,15 @@ class Init(OceanIOStep):
             np.pi * (ds.yCell - ds.yCell.min()) / ly
         )
         wind_stress_meridional = xr.zeros_like(ds.xCell)
-        ds['windStressZonal'] = wind_stress_zonal.expand_dims(
+
+        ds_forcing = xr.Dataset()
+        ds_forcing['windStressZonal'] = wind_stress_zonal.expand_dims(
             dim='Time', axis=0
         )
-        ds['windStressMeridional'] = wind_stress_meridional.expand_dims(
-            dim='Time', axis=0
+        ds_forcing['windStressMeridional'] = (
+            wind_stress_meridional.expand_dims(dim='Time', axis=0)
         )
+        self.write_model_dataset(ds_forcing, 'forcing.nc', config)
 
         # write the initial condition file
         self.write_initial_state_dataset(ds, 'init.nc', config)
@@ -148,7 +152,7 @@ class Init(OceanIOStep):
 
         plot_horiz_field(
             ds_mesh,
-            ds['windStressZonal'],
+            ds_forcing['windStressZonal'],
             'forcing_wind_stress_zonal.png',
             cmap='cmo.balance',
             show_patch_edges=True,
