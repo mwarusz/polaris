@@ -208,8 +208,10 @@ output_interval_units = hours
 ### description
 
 `ocean/baroclinic_channel/10km/default` is the default version of the
-baroclinic eddies test case for a short (15 min) test run and validation of
-prognostic variables for regression testing.
+baroclinic eddies test case.  It includes a `forward` step for a short
+(15 min) test run and validation of prognostic variables for regression
+testing, a `long_forward` step for a longer (30 day) integration, and a
+`viz` step for visualizing the output.
 
 ### mesh
 
@@ -230,8 +232,8 @@ See {ref}`ocean-baroclinic-channel`.
 
 ### time step and run duration
 
-See {ref}`ocean-baroclinic-channel` for time step. The run duration is 3 time
-steps.
+See {ref}`ocean-baroclinic-channel` for time step. The `forward` step run
+duration is 3 time steps. The `long_forward` step runs for 30 days.
 
 ### config options
 
@@ -281,11 +283,11 @@ See {ref}`ocean-baroclinic-channel`.
 This test is run on 4 cores for the `4proc` step and 8 cores for the `8proc`
 step.
 
-## thread
+## threads
 
 ### description
 
-`ocean/baroclinic_channel/10km/thread` runs a short (15 min) integration
+`ocean/baroclinic_channel/10km/threads` runs a short (15 min) integration
 of the model forward in time on 1 threads per processor (`1thread` step) and
 then on 2 threads (`2thread` step) to make sure the resulting prognostic
 variables are bit-for-bit identical between the two runs.

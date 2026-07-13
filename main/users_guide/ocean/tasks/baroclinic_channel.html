@@ -67,7 +67,7 @@
 <li class="toctree-l4"><a class="reference internal" href="#config-options">config options</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#default">default</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#decomp">decomp</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#thread">thread</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#threads">threads</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#restart">restart</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#rpe">rpe</a></li>
 </ul>
@@ -361,8 +361,10 @@ other baroclinic channel tests.</p>
 <section id="id1">
 <h3>description<a class="headerlink" href="#id1" title="Link to this heading"></a></h3>
 <p><code class="docutils literal notranslate"><span class="pre">ocean/baroclinic_channel/10km/default</span></code> is the default version of the
-baroclinic eddies test case for a short (15 min) test run and validation of
-prognostic variables for regression testing.</p>
+baroclinic eddies test case.  It includes a <code class="docutils literal notranslate"><span class="pre">forward</span></code> step for a short
+(15 min) test run and validation of prognostic variables for regression
+testing, a <code class="docutils literal notranslate"><span class="pre">long_forward</span></code> step for a longer (30 day) integration, and a
+<code class="docutils literal notranslate"><span class="pre">viz</span></code> step for visualizing the output.</p>
 </section>
 <section id="id2">
 <h3>mesh<a class="headerlink" href="#id2" title="Link to this heading"></a></h3>
@@ -383,8 +385,8 @@ resolution is supported.</p>
 </section>
 <section id="id6">
 <h3>time step and run duration<a class="headerlink" href="#id6" title="Link to this heading"></a></h3>
-<p>See <a class="reference internal" href="#ocean-baroclinic-channel"><span class="std std-ref">baroclinic channel</span></a> for time step. The run duration is 3 time
-steps.</p>
+<p>See <a class="reference internal" href="#ocean-baroclinic-channel"><span class="std std-ref">baroclinic channel</span></a> for time step. The <code class="docutils literal notranslate"><span class="pre">forward</span></code> step run
+duration is 3 time steps. The <code class="docutils literal notranslate"><span class="pre">long_forward</span></code> step runs for 30 days.</p>
 </section>
 <section id="id7">
 <h3>config options<a class="headerlink" href="#id7" title="Link to this heading"></a></h3>
@@ -436,11 +438,11 @@ steps.</p>
 step.</p>
 </section>
 </section>
-<section id="thread">
-<h2>thread<a class="headerlink" href="#thread" title="Link to this heading"></a></h2>
+<section id="threads">
+<h2>threads<a class="headerlink" href="#threads" title="Link to this heading"></a></h2>
 <section id="id16">
 <h3>description<a class="headerlink" href="#id16" title="Link to this heading"></a></h3>
-<p><code class="docutils literal notranslate"><span class="pre">ocean/baroclinic_channel/10km/thread</span></code> runs a short (15 min) integration
+<p><code class="docutils literal notranslate"><span class="pre">ocean/baroclinic_channel/10km/threads</span></code> runs a short (15 min) integration
 of the model forward in time on 1 threads per processor (<code class="docutils literal notranslate"><span class="pre">1thread</span></code> step) and
 then on 2 threads (<code class="docutils literal notranslate"><span class="pre">2thread</span></code> step) to make sure the resulting prognostic
 variables are bit-for-bit identical between the two runs.</p>

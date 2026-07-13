@@ -61,6 +61,13 @@ defines a step for validating outputs in two step directories against one
 another.  This step ensures that `temperature`, `salinity`, `layerThickness`
 and `normalVelocity` are identical in `output.nc` files in the two steps.
 
+### viz
+
+The class {py:class}`polaris.tasks.ocean.baroclinic_channel.viz.Viz`
+defines a step for visualizing the output of a baroclinic channel forward run.
+The step opens the mesh and output datasets and produces plots of the
+temperature and velocity fields.
+
 (dev-ocean-baroclinic-channel-default)=
 
 ## default
