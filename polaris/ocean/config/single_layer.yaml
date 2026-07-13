@@ -1,3 +1,10 @@
+ocean:
+  debug:
+    config_disable_thick_vadv: true
+    config_disable_vel_vadv: true
+    config_disable_vel_vmix: true
+    config_disable_tr_vmix: true
+
 mpas-ocean:
   cvmix:
     config_use_cvmix: false
@@ -6,8 +13,5 @@ mpas-ocean:
     config_ALE_thickness_proportionality: weights_only
   debug:
     config_compute_active_tracer_budgets: false
-    config_disable_thick_vadv: true
-    config_disable_vel_vadv: true
-    config_disable_vel_vmix: true
   pressure_gradient:
     config_pressure_gradient_type: ssh_gradient

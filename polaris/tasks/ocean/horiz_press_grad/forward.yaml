@@ -18,6 +18,8 @@ Omega:
     UseCustomTendency: false
     ManufacturedSolutionTendency: false
     PressureGradTendencyEnable: true
+    VelVertMixTendencyEnable: false
+    TracerVertMixTendencyEnable: false
   IOStreams:
     History:
       Filename: output.nc

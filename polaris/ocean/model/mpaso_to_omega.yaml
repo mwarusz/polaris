@@ -188,6 +188,12 @@ config:
     config_explicit_bottom_drag_coeff: BottomDragCoeff
 
 - section:
+    debug: Tendencies
+  options:
+    config_disable_vel_vmix: not VelVertMixTendencyEnable
+    config_disable_tr_vmix: not TracerVertMixTendencyEnable
+
+- section:
     manufactured_solution: ManufacturedSolution
   options:
     config_manufactured_solution_wavelength_x: WavelengthX
