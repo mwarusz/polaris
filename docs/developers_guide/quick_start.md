@@ -326,20 +326,21 @@ repository, but the MALI-Dev submodule is not yet used.
 
 For MPAS-Ocean and Omega, the recommended workflow is to let Polaris build
 the component automatically during `polaris setup` or `polaris suite`.
-By default, Polaris will reuse an existing build at the location specified by
-the `component_path` config option when one is already present, which avoids
-rebuilding when setting up the same tasks or suites again.  A manual build is
-still supported and can be useful for advanced workflows, but should generally
-be treated as an opt-in alternative.
+Polaris checks whether a complete build already exists at the
+`component_path` location and, if so, reuses it without rebuilding.  If the
+component executable and required files are not found there, Polaris builds
+automatically.  A manual build is still supported and can be useful for
+advanced workflows, but should generally be treated as an opt-in alternative.
 
-If you are not pointing to an existing build with `-p` or `-f`, Polaris cannot
-infer whether you want MPAS-Ocean or Omega, so you should always supply
-`--model`.
+If `-p` or `-f` points to a location where the model has not yet been built,
+Polaris cannot infer whether you want MPAS-Ocean or Omega.  In such cases,
+supply `--model` to specify the model type explicitly.
 
 Common optional build flags for this automated workflow:
 
-- `--build`: force a build during setup, even if a build already exists at
-  `component_path`
+- `--build`: force a build during setup, even if a complete build already
+  exists at `component_path`; use this when you want to rebuild after
+  updating source code
 - `--clean_build`: remove any previous build state and start fresh (implies
   `--build`)
 - `--quiet_build`: write build output to log files instead of printing full
@@ -358,9 +359,12 @@ polaris suite -c ocean -t nightly \
   -m $MACHINE -w $WORKDIR --model omega --clean_build --quiet_build
 ```
 
-### Using an existing build (`-p` or `-f`)
+### Specifying a component path (`-p` or `-f`)
 
-If you already have a component build in another location, you can either:
+You can direct Polaris to a specific directory for the component build using
+`-p` on the command line or `component_path` in a config file.  Polaris
+checks whether the component is already built at that location.  If found, it
+is reused.  If not, Polaris builds it automatically at that location.
 
 1. provide it directly on the command line with `-p`, e.g.
 
@@ -394,8 +398,9 @@ one-off setup commands.
 
 #### Recommended default: automated build from `polaris setup`/`polaris suite`
 
-For MPAS-Ocean, Polaris can build automatically during setup and places the
-build in `${WORKDIR}/build` by default:
+For MPAS-Ocean, Polaris builds automatically during setup and places the
+build in `${WORKDIR}/build` by default.  If a complete build already exists
+there, it is reused:
 
 ```bash
 source ./load_<env_name>_<machine>_<compiler>_<mpi>.sh
@@ -403,8 +408,9 @@ polaris setup -t ocean/planar/baroclinic_channel/10km/default \
   -m $MACHINE -w $WORKDIR --model mpas-ocean
 ```
 
-Use the same approach with `polaris suite`; for repeated setup, add `--build`
-to force rebuilding.
+Use the same approach with `polaris suite`.  After a first build, repeated
+`polaris setup` or `polaris suite` calls reuse the existing build; add
+`--build` only when you want to force a rebuild after updating source code.
 
 #### Manual build (advanced/optional)
 
@@ -439,8 +445,9 @@ If you simply wish to run the CTests from Omega, you likely want to use the
 
 #### Recommended default: automated build from `polaris setup`/`polaris suite`
 
-For Omega, Polaris can build automatically during setup and places the build
-in `${WORKDIR}/build` by default:
+For Omega, Polaris builds automatically during setup and places the build
+in `${WORKDIR}/build` by default.  If a complete build already exists there,
+it is reused:
 
 ```bash
 source ./load_<env_name>_<machine>_<compiler>_<mpi>.sh
@@ -448,8 +455,9 @@ polaris setup -t ocean/planar/barotropic_gyre/munk/free-slip \
   -m $MACHINE -w $WORKDIR --model omega
 ```
 
-Use the same approach with `polaris suite`; for repeated setup, add `--build`
-to force rebuilding.
+Use the same approach with `polaris suite`.  After a first build, repeated
+`polaris setup` or `polaris suite` calls reuse the existing build; add
+`--build` only when you want to force a rebuild after updating source code.
 
 #### Manual build (advanced/optional)
 
