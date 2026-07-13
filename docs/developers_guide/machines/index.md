@@ -42,73 +42,36 @@ frontier
 perlmutter
 ```
 
-(dev-mpas-supported-machines)=
+### Supported Machine Configurations
 
-### MPAS-Ocean and -Seaice Supported Machines
+The following table lists all supported machine, model, and compiler
+combinations. The MPAS make target is only applicable for MPAS-Ocean and
+MPAS-Seaice builds.
 
-These are the machines supported by MPAS-Ocean and -Seaice, including the
-"make target" used to build the MPAS component.
+```{jinja} supported_machines
+.. list-table::
+   :header-rows: 1
+   :widths: 15 10 20 10 20
 
-```{eval-rst}
-+--------------+------------+-----------+-------------------+
-| Machine      | Compiler   | MPI lib.  |  MPAS make target |
-+==============+============+===========+===================+
-| chrysalis    | intel      | openmpi   | ifort             |
-|              +------------+-----------+-------------------+
-|              | gnu        | openmpi   | gfortran          |
-+--------------+------------+-----------+-------------------+
-| frontier     | craygnu    | mpich     | gnu-cray          |
-|              +------------+-----------+-------------------+
-|              | craycray   | mpich     | cray-cray         |
-+--------------+------------+-----------+-------------------+
-| pm-cpu       | gnu        | mpich     | gnu-cray          |
-|              +------------+-----------+-------------------+
-|              | intel      | mpich     | intel-cray        |
-+--------------+------------+-----------+-------------------+
+   * - Machine
+     - Model
+     - Compiler
+     - MPI
+     - MPAS Make Target
+{% for machine in machines %}
+{% for model in machine.models %}
+   * - {{ machine.name }}
+     - {{ model.model }}
+     - {{ model.compiler }}
+     - {{ model.mpi }}
+     - {{ model.mpas_target if model.mpas_target else "N/A" }}
+{% endfor %}
+{% endfor %}
 ```
 
 :::{note}
 MPAS components currently do not support Aurora in standalone builds.
 :::
-
-(dev-omega-supported-machines)=
-
-### Omega Supported Machines
-
-These are the machines supported by Omega.  The MPI library is always the
-E3SM default for the given machine an compiler.
-
-```{eval-rst}
-+--------------+------------------+-----------+
-| Machine      | Compiler         | MPI lib.  |
-+==============+==================+===========+
-| aurora       | oneapi-ifx       | mpich     |
-+--------------+------------------+-----------+
-| chrysalis    | oneapi-ifx       | openmpi   |
-|              +------------------+-----------+
-|              | gnu              | openmpi   |
-|              +------------------+-----------+
-|              | intel            | openmpi   |
-+--------------+------------------+-----------+
-| frontier     | craygnu          | mpich     |
-|              +------------------+-----------+
-|              | craygnu-mphipcc  | mpich     |
-|              +------------------+-----------+
-|              | crayamd          | mpich     |
-|              +------------------+-----------+
-|              | crayamd-mphipcc  | mpich     |
-|              +------------------+-----------+
-|              | craycray         | mpich     |
-|              +------------------+-----------+
-|              | craycray-mphipcc | mpich     |
-+--------------+------------------+-----------+
-| pm-cpu       | gnu              | mpich     |
-|              +------------------+-----------+
-|              | intel            | mpich     |
-+--------------+------------------+-----------+
-| pm-gpu       | gnugpu           | mpich     |
-+--------------+------------------+-----------+
-```
 
 (dev-other-machines)=
 

@@ -1,0 +1,92 @@
+# Supported machines for MPAS-Ocean, MPAS-Seaice, and Omega
+machines:
+  - name: aurora
+    models:
+      - model: Omega
+        compiler: oneapi-ifx
+        mpi: mpich
+        mpas_target: null
+
+  - name: chrysalis
+    models:
+      - model: MPAS
+        compiler: intel
+        mpi: openmpi
+        mpas_target: ifort
+      - model: MPAS
+        compiler: gnu
+        mpi: openmpi
+        mpas_target: gfortran
+      - model: Omega
+        compiler: oneapi-ifx
+        mpi: openmpi
+        mpas_target: null
+      - model: Omega
+        compiler: gnu
+        mpi: openmpi
+        mpas_target: null
+      - model: Omega
+        compiler: intel
+        mpi: openmpi
+        mpas_target: null
+
+  - name: frontier
+    models:
+      - model: MPAS
+        compiler: craygnu
+        mpi: mpich
+        mpas_target: gnu-cray
+      - model: MPAS
+        compiler: craycray
+        mpi: mpich
+        mpas_target: cray-cray
+      - model: Omega
+        compiler: craygnu
+        mpi: mpich
+        mpas_target: null
+      - model: Omega
+        compiler: craygnu-mphipcc
+        mpi: mpich
+        mpas_target: null
+      - model: Omega
+        compiler: crayamd
+        mpi: mpich
+        mpas_target: null
+      - model: Omega
+        compiler: crayamd-mphipcc
+        mpi: mpich
+        mpas_target: null
+      - model: Omega
+        compiler: craycray
+        mpi: mpich
+        mpas_target: null
+      - model: Omega
+        compiler: craycray-mphipcc
+        mpi: mpich
+        mpas_target: null
+
+  - name: pm-cpu
+    models:
+      - model: MPAS
+        compiler: gnu
+        mpi: mpich
+        mpas_target: gnu-cray
+      - model: MPAS
+        compiler: intel
+        mpi: mpich
+        mpas_target: intel-cray
+      - model: Omega
+        compiler: gnu
+        mpi: mpich
+        mpas_target: null
+      - model: Omega
+        compiler: intel
+        mpi: mpich
+        mpas_target: null
+
+  - name: pm-gpu
+    models:
+      - model: Omega
+        compiler: gnugpu
+        mpi: mpich
+        mpas_target: null
