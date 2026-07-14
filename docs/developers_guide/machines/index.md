@@ -49,22 +49,11 @@ combinations. The MPAS make target is only applicable for MPAS-Ocean and
 MPAS-Seaice builds.
 
 ```{jinja} supported_machines
-.. list-table::
-   :header-rows: 1
-   :widths: 15 10 20 10 20
-
-   * - Machine
-     - Model
-     - Compiler
-     - MPI
-     - MPAS Make Target
+| Machine | Model | Compiler | MPI | MPAS Make Target |
+| --- | --- | --- | --- | --- |
 {% for machine in machines %}
 {% for model in machine.models %}
-   * - {{ machine.name }}
-     - {{ model.model }}
-     - {{ model.compiler }}
-     - {{ model.mpi }}
-     - {{ model.mpas_target if model.mpas_target else "N/A" }}
+| {{ machine.name }} | {{ model.model }} | {{ model.compiler }} | {{ model.mpi }} | {{ model.mpas_target if model.mpas_target else "N/A" }} |
 {% endfor %}
 {% endfor %}
 ```

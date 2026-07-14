@@ -136,3 +136,6 @@ with open(_machines_yaml_path, 'r') as f:
 jinja_contexts = {
     'supported_machines': _machines_data,
 }
+
+# Trim block whitespace so the generated pipe table has no blank rows
+jinja_env_kwargs = {'trim_blocks': True, 'lstrip_blocks': True}
