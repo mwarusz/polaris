@@ -98,6 +98,30 @@ def _make_omega_build_dir(build_dir, build_type, cache_key='OMEGA_BUILD_TYPE'):
     )
 
 
+def test_get_compiler_prefers_build_over_deploy():
+    config = ConfigParser()
+    config.add_section('build')
+    config.set('build', 'compiler', 'craygnu-mphipcc')
+    config.add_section('deploy')
+    config.set('deploy', 'compiler', 'craygnu')
+
+    assert provenance._get_compiler(config) == 'craygnu-mphipcc'
+
+
+def test_get_compiler_falls_back_to_deploy():
+    config = ConfigParser()
+    config.add_section('deploy')
+    config.set('deploy', 'compiler', 'craygnu')
+
+    assert provenance._get_compiler(config) == 'craygnu'
+
+
+def test_get_compiler_returns_none_when_missing():
+    config = ConfigParser()
+
+    assert provenance._get_compiler(config) is None
+
+
 def _make_config(build_dir, debug):
     config = ConfigParser()
     config.add_section('ocean')
