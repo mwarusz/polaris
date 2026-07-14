@@ -7,6 +7,8 @@
 import os
 from datetime import date
 
+import yaml
+
 from polaris.version import __version__
 
 # -- Project information -----------------------------------------------------
@@ -44,6 +46,7 @@ extensions = [
     "sphinx.ext.viewcode",
     "sphinx.ext.mathjax",
     "sphinx.ext.napoleon",
+    "sphinx_jinja",
 ]
 
 autosummary_generate = ['developers_guide/api.md',
@@ -117,3 +120,22 @@ html_static_path = ["_static"]
 html_context = {
     "current_version": os.getenv("DOCS_VERSION", "main"),
 }
+
+# -- Jinja context for sphinx-jinja ------------------------------------------
+
+# Load supported machines data from YAML
+_machines_yaml_path = os.path.join(
+    os.path.dirname(__file__),
+    'developers_guide',
+    'supported_machines.yaml'
+)
+
+with open(_machines_yaml_path, 'r') as f:
+    _machines_data = yaml.safe_load(f)
+
+jinja_contexts = {
+    'supported_machines': _machines_data,
+}
+
+# Trim block whitespace so the generated pipe table has no blank rows
+jinja_env_kwargs = {'trim_blocks': True, 'lstrip_blocks': True}
