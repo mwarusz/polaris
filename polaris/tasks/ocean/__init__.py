@@ -341,6 +341,22 @@ class Ocean(Component):
 
         ds_vc = ds.copy()
 
+        # make sure SurfacePressure is present for Omega
+        if 'SurfacePressure' not in ds.keys():
+            if 'surfacePressure' in ds.keys():
+                # Because 'SurfacePressure' is required for Omega only,
+                # we must use Omega naming
+                ds['SurfacePressure'] = ds.surfacePressure
+            else:
+                print(
+                    'surfacePressure not found in initial_state dataset; '
+                    'defaulting to zeros'
+                )
+                ds['SurfacePressure'] = xr.DataArray(
+                    data=np.zeros((1, ds.sizes['nCells']), dtype=float),
+                    dims=['Time', 'nCells'],
+                    attrs={'units': 'Pa', 'long_name': 'Surface Pressure'},
+                )
         # Convert restingThickness (geometric) to RefPseudoThickness (pseudo)
         if 'restingThickness' in ds_vc and 'RefPseudoThickness' not in ds_vc:
             pseudothickness, _ = pseudothickness_from_ds(
@@ -425,22 +441,6 @@ class Ocean(Component):
         if self.model == 'omega':
             ds = self.remove_vert_coord_vars(ds)
 
-        # make sure SurfacePressure is present for Omega
-        if 'SurfacePressure' not in ds:
-            if 'surfacePressure' in ds:
-                # Because 'SurfacePressure' is required for Omega only,
-                # we must use Omega naming
-                ds['SurfacePressure'] = ds.surfacePressure
-            else:
-                print(
-                    'surfacePressure not found in initial_state dataset; '
-                    'defaulting to zeros'
-                )
-                ds['SurfacePressure'] = xr.DataArray(
-                    data=np.zeros((1, ds.sizes['nCells']), dtype=float),
-                    dims=['Time', 'nCells'],
-                    attrs={'units': 'Pa', 'long_name': 'Surface Pressure'},
-                )
         self.write_model_dataset(ds, filename, config, contains_state=True)
 
     def map_from_native_model_vars(self, ds):
