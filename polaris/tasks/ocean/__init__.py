@@ -58,6 +58,7 @@ class Ocean(Component):
         self.mpaso_to_omega_var_map: Union[None, Dict[str, str]] = None
         self.horiz_mesh_vars: Union[None, list[str]] = None
         self.vert_coord_vars: Union[None, list[str]] = None
+        self.state_vars: Union[None, list[str]] = None
 
     def configure(self, config, tasks):
         """
@@ -176,7 +177,7 @@ class Ocean(Component):
             ]
         return renamed_vars
 
-    def write_model_dataset(self, ds, filename, config):
+    def write_model_dataset(self, ds, filename, config, contains_state=False):
         """
         Write out the given dataset, mapping dimension and variable names from
         MPAS-Ocean to Omega names if appropriate
@@ -193,6 +194,10 @@ class Ocean(Component):
             Configuration for the task; used when the model is Omega to
             convert geometric layer thickness to pseudo-thickness before
             writing.
+
+        contains_state : bool, optional
+            If True, perform additional validation that all configured state
+            variables are present in the dataset after mapping.
         """
         if self.model == 'omega':
             # fields to be converted from geometric to pseudo thickness
@@ -233,10 +238,20 @@ class Ocean(Component):
                             )
                             ds[omega_var] = ds[mpas_var] / (spec_vol * RhoSw)
 
-        # After map_to_native_model_vars, the dataset contains
-        # LayerThickness and PseudoThickness which are both
-        # pseudo-thickness
         ds = self.map_to_native_model_vars(ds)
+
+        if contains_state:
+            # After map_to_native_model_vars, the dataset contains
+            # LayerThickness and PseudoThickness which are both
+            # pseudo-thickness
+            if self.state_vars is None:
+                self._read_variables_yaml()
+            if self.model == 'omega' and self.mpaso_to_omega_var_map is None:
+                self._read_var_map()
+            assert self.state_vars is not None
+
+            native_vars = self.map_var_list_to_native_model(self.state_vars)
+            self._check_vars_present(ds, native_vars, 'write_model_dataset')
 
         write_netcdf(ds=ds, fileName=filename)
 
@@ -318,7 +333,6 @@ class Ocean(Component):
         assert self.vert_coord_vars is not None
 
         native_vars = self.map_var_list_to_native_model(self.vert_coord_vars)
-
         if self.model != 'omega':
             self._check_vars_present(
                 ds, native_vars, 'write_vert_coord_dataset'
@@ -327,6 +341,22 @@ class Ocean(Component):
 
         ds_vc = ds.copy()
 
+        # make sure SurfacePressure is present for Omega
+        if 'SurfacePressure' not in ds.keys():
+            if 'surfacePressure' in ds.keys():
+                # Because 'SurfacePressure' is required for Omega only,
+                # we must use Omega naming
+                ds['SurfacePressure'] = ds.surfacePressure
+            else:
+                print(
+                    'surfacePressure not found in initial_state dataset; '
+                    'defaulting to zeros'
+                )
+                ds['SurfacePressure'] = xr.DataArray(
+                    data=np.zeros((1, ds.sizes['nCells']), dtype=float),
+                    dims=['Time', 'nCells'],
+                    attrs={'units': 'Pa', 'long_name': 'Surface Pressure'},
+                )
         # Convert restingThickness (geometric) to RefPseudoThickness (pseudo)
         if 'restingThickness' in ds_vc and 'RefPseudoThickness' not in ds_vc:
             pseudothickness, _ = pseudothickness_from_ds(
@@ -337,10 +367,24 @@ class Ocean(Component):
                 if 'Time' in pseudothickness.dims:
                     pseudothickness = pseudothickness.isel(Time=0)
                 ds_vc['RefPseudoThickness'] = pseudothickness
+        if 'vertCoordMovementWeights' not in ds_vc:
+            print(
+                'vertCoordMovementWeights not found in vert_coord dataset; '
+                'defaulting to ones'
+            )
+            ds_vc['vertCoordMovementWeights'] = xr.DataArray(
+                data=np.ones(
+                    (1, ds_vc.sizes['nVertLevels'], ds_vc.sizes['nCells']),
+                    dtype=float,
+                ),
+                dims=['Time', 'nVertLevels', 'nCells'],
+                attrs={
+                    'units': '',
+                    'long_name': 'Vertical coordinate movement weights',
+                },
+            )
 
         ds_vc = self.map_to_native_model_vars(ds_vc)
-        # native_vars for Omega: [MinLayerCell, MaxLayerCell,
-        #   BottomGeomDepth, VertCoordMovementWeights, RefPseudoThickness]
         self._check_vars_present(
             ds_vc, native_vars, 'write_vert_coord_dataset'
         )
@@ -391,18 +435,13 @@ class Ocean(Component):
             Configuration for the task; forwarded to
             :py:meth:`write_model_dataset`.
         """
+        if self.model is None:
+            self.model = config.get('ocean', 'model')
         ds = self.remove_horiz_mesh_vars(ds)
         if self.model == 'omega':
             ds = self.remove_vert_coord_vars(ds)
 
-            # make sure surfacePressure is present for Omega
-            if 'surfacePressure' not in ds and 'SurfacePressure' not in ds:
-                ds['surfacePressure'] = xr.DataArray(
-                    data=np.zeros((1, ds.sizes['nCells']), dtype=float),
-                    dims=['Time', 'nCells'],
-                    attrs={'units': 'Pa', 'long_name': 'Surface Pressure'},
-                )
-        self.write_model_dataset(ds, filename, config)
+        self.write_model_dataset(ds, filename, config, contains_state=True)
 
     def map_from_native_model_vars(self, ds):
         """
@@ -632,11 +671,6 @@ class Ocean(Component):
         """
         Read horiz_mesh_vars and vert_coord_vars from variables.yaml
         """
-        if (
-            self.horiz_mesh_vars is not None
-            and self.vert_coord_vars is not None
-        ):
-            return
         package = 'polaris.ocean.model'
         filename = 'variables.yaml'
         text = imp_res.files(package).joinpath(filename).read_text()
@@ -646,6 +680,7 @@ class Ocean(Component):
         self.vert_coord_vars = list(
             nested_dict['ocean']['vert_coord_variables']
         )
+        self.state_vars = list(nested_dict['ocean']['state_variables'])
         model_section_map = {'mpas-ocean': 'mpas-ocean', 'omega': 'Omega'}
         model_key = model_section_map.get(self.model or '')
         if model_key:
@@ -653,6 +688,8 @@ class Ocean(Component):
                 'vert_coord_variables', []
             )
             self.vert_coord_vars.extend(extra)
+            extra = nested_dict.get(model_key, {}).get('state_variables', [])
+            self.state_vars.extend(extra)
 
     def _read_var_map(self):
         """
