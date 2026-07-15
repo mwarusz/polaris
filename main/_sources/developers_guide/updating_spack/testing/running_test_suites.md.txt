@@ -23,7 +23,7 @@ with Intel and OpenMPI):
    ```
 
    *(Replace `chrysalis`, `intel`, and `openmpi` with your machine, compiler,
-   and MPI as appropriate. See {ref}`dev-mpas-supported-machines`.)*
+   and MPI as appropriate. See {ref}`dev-supported-machines`.)*
 
 3. **Set Up (and Auto-Build) the Suite**
 
@@ -142,5 +142,5 @@ with `oneapi-ifx` and OpenMPI):
 **Tip:**
 If you are testing on a different machine or with a different compiler/MPI,
 simply substitute the appropriate names in the examples above. For a full list
-of supported combinations and the correct make targets, see the tables in
-{ref}`dev-mpas-supported-machines` and {ref}`dev-omega-supported-machines`.
+of supported combinations and the correct make targets, see the table in
+{ref}`dev-supported-machines`.

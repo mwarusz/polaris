@@ -415,7 +415,7 @@ Use the same approach with `polaris suite`.  After a first build, repeated
 #### Manual build (advanced/optional)
 
 For MPAS-Ocean and -Seaice both, see the last column of the table in
-{ref}`dev-mpas-supported-machines` for the right `<mpas_make_target>` command for
+{ref}`dev-supported-machines` for the right `<mpas_make_target>` command for
 each machine and compiler.
 
 To build MPAS-Ocean manually, you would typically run:
@@ -437,7 +437,7 @@ provided, MPAS-Ocean is usually detected automatically; otherwise, provide
 
 ### Omega
 
-See the table in {ref}`dev-omega-supported-machines` for a list of supported
+See the table in {ref}`dev-supported-machines` for a list of supported
 machines.
 
 If you simply wish to run the CTests from Omega, you likely want to use the
