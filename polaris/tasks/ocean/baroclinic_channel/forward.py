@@ -241,7 +241,7 @@ class Forward(OceanModelStep):
             run_seconds = self.run_time_steps * dt
             run_duration_str = get_time_interval_string(seconds=run_seconds)
             output_freq = int(run_seconds)
-            output_freq_units = 'seconds'
+            output_freq_units = 'days'
         else:
             raise ValueError(
                 'Could not determine run duration and output frequency for run'

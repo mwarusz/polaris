@@ -5,10 +5,13 @@ ocean:
     config_time_integrator: {{ time_integrator }}
   hmix_del2:
     config_use_mom_del2: true
-    config_use_tracer_del2: false
+    config_use_tracer_del2: true
+    config_tracer_del2: 1.0e-8
   hmix_del4:
-    config_use_mom_del4: false
-    config_use_tracer_del4: false
+    config_use_mom_del4: true
+    config_use_tracer_del4: true
+    config_mom_del4: 1.0e-8
+    config_tracer_del4: 1.0e-8
   cvmix:
     config_use_cvmix_convection: false
     config_use_cvmix_shear: false
