@@ -8,6 +8,11 @@ channels = [
 platforms = ["{{ platform }}"]
 channel-priority = "strict"
 
+{%- if macos_version %}
+[system-requirements]
+macos = "26.0"
+{%- endif %}
+
 [dependencies]
 python = "{{ python }}.*"
 
