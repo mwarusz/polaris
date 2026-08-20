@@ -58,12 +58,26 @@ class Init(OceanIOStep):
             ds_mesh, graphInfoFileName='culled_graph.info', logger=logger
         )
         ds_mesh = add_coriolis_to_dataset(config, ds_mesh)
+
+        x_cell = ds_mesh.xCell
+        x_edge = ds_mesh.xEdge
+        x_vertex = ds_mesh.xVertex
+
+        lon = 3 * np.pi / 2
+        lat = np.pi / 2
+        ds_mesh['lonCell'] = lon * xr.ones_like(x_cell)
+        ds_mesh['latCell'] = lat * xr.ones_like(x_cell)
+        ds_mesh['lonEdge'] = lon * xr.ones_like(x_edge)
+        ds_mesh['latEdge'] = lat * xr.ones_like(x_edge)
+        ds_mesh['lonVertex'] = lon * xr.ones_like(x_vertex)
+        ds_mesh['latVertex'] = lat * xr.ones_like(x_vertex)
+
         self.write_horiz_mesh_dataset(ds_mesh, 'culled_mesh.nc', config)
 
         ds = ds_mesh.copy()
-        x_cell = ds_mesh.xCell
         bottom_depth = config.getfloat('vertical_grid', 'bottom_depth')
         ds['bottomDepth'] = bottom_depth * xr.ones_like(x_cell)
+
         ds['ssh'] = xr.zeros_like(x_cell)
         init_vertical_coord(config, ds)
 
