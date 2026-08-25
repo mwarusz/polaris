@@ -45,7 +45,7 @@ class Default(Task):
             run_time_steps=3,
             graph_target=f'{init.path}/culled_graph.info',
         )
-        self.add_step(forward_step)
+        self.add_step(forward_step, run_by_default=False)
 
         long_forward_step = Forward(
             component=component,
@@ -58,7 +58,7 @@ class Default(Task):
             resolution=resolution,
             graph_target=f'{init.path}/culled_graph.info',
         )
-        self.add_step(long_forward_step, run_by_default=False)
+        self.add_step(long_forward_step, run_by_default=True)
 
         viz_dependencies: Dict[str, Step] = dict(
             mesh=init, init=init, forward=long_forward_step
