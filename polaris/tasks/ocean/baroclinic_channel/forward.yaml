@@ -51,6 +51,15 @@ mpas-ocean:
       - layerThickness
 
 Omega:
+  TimeIntegration:
+    TimeStepper: SplitExplicitRK2
+    TimeStep: 0000_00:10:00
+    ModeSplitShare:
+      BtrTimeStepper: Predictor-Corrector
+      BtrTimeStep: 0000_00:00:50
+      NTimeStepIteration: 2
+      NBclCoriolisIteration: 2
+      ReinitSplitVelocity: false
   IO:
     IOStride: 1
   Advection:
