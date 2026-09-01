@@ -42,10 +42,10 @@ class Default(Task):
             min_tasks=None,
             openmp_threads=1,
             resolution=resolution,
-            run_time_steps=3,
+            run_time_steps=5,
             graph_target=f'{init.path}/culled_graph.info',
         )
-        self.add_step(forward_step, run_by_default=False)
+        self.add_step(forward_step, run_by_default=True)
 
         long_forward_step = Forward(
             component=component,
