@@ -53,10 +53,10 @@ mpas-ocean:
 Omega:
   TimeIntegration:
     TimeStepper: SplitExplicitRK2
-    TimeStep: 0000_00:10:00
+    TimeStep: 0000_00:05:00
     ModeSplitShare:
       BtrTimeStepper: Predictor-Corrector
-      BtrTimeStep: 0000_00:00:06
+      BtrTimeStep: 0000_00:00:05
       NTimeStepIteration: 2
       NBclCoriolisIteration: 2
       ReinitSplitVelocity: false
