@@ -81,15 +81,27 @@ class AnalysisMembers(Task):
                 dt='02:00:00',
                 btr_dt='00:04:00',
                 run_duration='0005_00:00:00',
+                mom_del2='1.0e3',
+                tr_del2='10.0',
+                mom_del4='1.2e11',  # default in MPAS-Ocean is 2.0e15
+                tr_del4='0.0',
             ),
             'EC30to60E2r2': dict(
                 dt='00:30:00',
                 btr_dt='00:01:00',
                 run_duration='0001_00:00:00',
+                mom_del2='1.0e3',
+                tr_del2='10.0',
+                mom_del4='1.2e11',
+                tr_del4='0.0',
             ),
             'RRS18to6v3': dict(
                 dt='00:00:10',
                 run_duration='0001_00:00:00',
+                mom_del2='0.0',
+                tr_del2='10.0',
+                mom_del4='3.2e09',
+                tr_del4='0.0',
             ),
         }
         package = 'polaris.tasks.ocean.realistic_global'
@@ -99,6 +111,10 @@ class AnalysisMembers(Task):
             'dt': mesh_info[mesh_name]['dt'],
             'btr_dt': mesh_info[mesh_name]['btr_dt'],
             'output_interval': '0001_00:00:00',
+            'mom_del2': mesh_info[mesh_name]['mom_del2'],
+            'tr_del2': mesh_info[mesh_name]['tr_del2'],
+            'mom_del4': mesh_info[mesh_name]['mom_del4'],
+            'tr_del4': mesh_info[mesh_name]['tr_del4'],
             'output_freq': '1',
             'output_freq_units': 'days',
         }
