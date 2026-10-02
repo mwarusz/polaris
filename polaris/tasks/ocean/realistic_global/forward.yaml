@@ -30,6 +30,10 @@ ocean:
     config_implicit_constant_bottom_drag_coeff: 1.0e-3
 
 mpas-ocean:
+  io:
+    config_pio_num_iotasks:  1
+    config_pio_stride: 1
+
   # If using teos10 for omega
   eos:
     config_eos_type: jm
@@ -47,6 +51,10 @@ mpas-ocean:
     config_AM_globalStats_compute_on_startup: true
     config_AM_globalStats_write_on_startup: true
     config_AM_globalStats_text_file: false
+  AM_timeSeriesStatsMonthly:
+    config_AM_timeSeriesStatsMonthly_enable: true
+    config_AM_timeSeriesStatsMonthly_compute_interval: 'dt'
+    config_AM_timeSeriesStatsMonthly_restart_stream: 'none'
   streams:
     mesh:
       filename_template: init.nc
@@ -60,7 +68,7 @@ mpas-ocean:
       - windStressZonal
       - windStressMeridional
     restart:
-      output_interval: {{ run_duration }}
+      output_interval: '0999_00:00:00'
     output:
       type: output
       filename_template: output.nc
@@ -89,6 +97,12 @@ mpas-ocean:
       - maxGlobalStats
       - avgGlobalStats
       - rmsGlobalStats
+    timeSeriesStatsMonthlyOutput:
+      type: output
+      filename_template: monthly_stats.nc
+      clobber_mode: truncate
+      reference_time: 0001-01-01_00:00:00
+      packages: timeSeriesStatsMonthlyAMPKG
 
 Omega:
   Tendencies:
@@ -165,7 +179,7 @@ Omega:
       # shorter than 100 days -- i.e. all of them -- wrote no restart at
       # all and could not be continued.
       Freq: 1
-      FreqUnits: OnShutdown
+      FreqUnits: Never
       UseStartEnd: false
       Contents:
         - Restart

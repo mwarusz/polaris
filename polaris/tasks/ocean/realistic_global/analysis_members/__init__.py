@@ -80,12 +80,12 @@ class AnalysisMembers(Task):
             'QU.240km': dict(
                 dt='02:00:00',
                 btr_dt='00:04:00',
-                run_duration='0005_00:00:00',
+                run_duration='0040_00:00:00',
             ),
             'EC30to60E2r2': dict(
                 dt='00:30:00',
                 btr_dt='00:01:00',
-                run_duration='0001_00:00:00',
+                run_duration='0040_00:00:00',
             ),
         }
         package = 'polaris.tasks.ocean.realistic_global'
