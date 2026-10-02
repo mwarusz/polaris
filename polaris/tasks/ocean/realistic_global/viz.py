@@ -129,7 +129,42 @@ class Viz(OceanIOStep):
                     out_filename=f'{var}_{t_days}days.png',
                     config=config,
                     colormap_section=colormap_section,
-                    title=f'{var} after {t_days} days',
+                    title=f'Omega {var} after {t_days} days',
+                    plot_land=True,
+                    central_longitude=180.0,
+                )
+
+        for var in ['DenMixLayerDepth', 'EddyKineticEnergy']:
+            # for var in ['dThreshMLD', 'EddyKineticEnergy']:
+            self.logger.info(f'Plotting {var}')
+            colormap_section = f'realistic_global_viz_{var}'
+            if var not in ds_init.keys():
+                self.logger.info(f'{var} not found in init.nc')
+            else:
+                plot_global_mpas_field(
+                    mesh_filename='mesh.nc',
+                    da=ds_init[var],
+                    out_filename=f'{var}_init.png',
+                    config=config,
+                    colormap_section=colormap_section,
+                    title=f'{var} at init',
+                    plot_land=True,
+                    central_longitude=180.0,
+                )
+            if var not in ds_final.keys():
+                self.logger.info(f'{var} not found in output.nc')
+            else:
+                if var == 'dThreshMLD':
+                    plotvar = 'DenMixLayerDepth'
+                else:
+                    plotvar = var
+                plot_global_mpas_field(
+                    mesh_filename='mesh.nc',
+                    da=ds_final[var],
+                    out_filename=f'{var}_{t_days}days.png',
+                    config=config,
+                    colormap_section=colormap_section,
+                    title=f'Omega {plotvar} after {t_days} days',
                     plot_land=True,
                     central_longitude=180.0,
                 )
