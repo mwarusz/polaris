@@ -55,6 +55,7 @@ mpas-ocean:
     config_AM_timeSeriesStatsMonthly_enable: true
     config_AM_timeSeriesStatsMonthly_compute_interval: 'dt'
     config_AM_timeSeriesStatsMonthly_restart_stream: 'none'
+    config_AM_timeSeriesStatsMonthly_reset_intervals: '00-03-00_00:00:00'
   streams:
     mesh:
       filename_template: init.nc
@@ -103,6 +104,8 @@ mpas-ocean:
       clobber_mode: truncate
       reference_time: 0001-01-01_00:00:00
       packages: timeSeriesStatsMonthlyAMPKG
+      output_interval: 00-03-00_00:00:00
+      filename_interval: 00-03-00_00:00:00
 
 Omega:
   Tendencies:
