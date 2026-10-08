@@ -75,20 +75,15 @@ mpas-ocean:
     output:
       type: output
       filename_template: output.nc
-      output_interval: {{ output_interval }}
+      output_interval: '0999_00:00:00' 
       clobber_mode: truncate
       reference_time: 0001-01-01_00:00:00
       contents:
-      - tracers
-      - xtime
-      - normalVelocity
       - layerThickness
-      - kineticEnergyCell
-      - relativeVorticityCell
     globalStatsOutput:
       type: output
       filename_template: global_stats.nc
-      output_interval: {{ output_interval }}
+      output_interval: '0030_00:00:00' 
       clobber_mode: truncate
       reference_time: 0001-01-01_00:00:00
       packages: globalStatsAMPKG
@@ -122,7 +117,7 @@ Omega:
       Enable: true
       ReductionPeriod: []
       Fields: [NormalVelocity, PseudoThickness, Temperature, Salinity, DenMixLayerDepth, EddyVelocity]
-      SnapshotPeriod: ["1Day"]
+      SnapshotPeriod: ["30Day"]
       Filename: global_stats
       Stream:
         FileFreq: 2
@@ -145,8 +140,8 @@ Omega:
         - Tracers
     History:
       Filename: output.nc
-      Freq: {{ output_freq }}
-      FreqUnits: {{ output_freq_units }}
+      Freq: 999
+      FreqUnits: years
       IfExists: append
       # effectively never
       FileFreq: 9999
