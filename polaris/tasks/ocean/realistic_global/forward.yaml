@@ -117,8 +117,20 @@ Omega:
     GlobalStats:
       Enable: true
       ReductionPeriod: []
+      Fields: [NormalVelocity, PseudoThickness, Temperature, Salinity, DenMixLayerDepth, EddyVelocity]
       SnapshotPeriod: ["1Day"]
       Filename: global_stats
+      Stream:
+        FileFreq: 2
+        FileFreqUnits: years
+    MonthlyAverages:
+      Enable: true
+      Fields: [Temperature, Salinity, NormalVelocity, PseudoThickness, DenMixLayerDepth, EddyVelocity]
+      ReductionPeriod: [3Month]
+      Filename: monthly.averages.nc
+      Stream:
+        FileFreq: 2
+        FileFreqUnits: years
   IOStreams:
     InitialVertCoord:
       Filename: init.nc

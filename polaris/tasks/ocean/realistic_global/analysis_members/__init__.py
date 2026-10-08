@@ -80,12 +80,12 @@ class AnalysisMembers(Task):
             'QU.240km': dict(
                 dt='02:00:00',
                 btr_dt='00:04:00',
-                run_duration='0040_00:00:00',
+                run_duration='0400_00:00:00',
             ),
             'EC30to60E2r2': dict(
                 dt='00:30:00',
                 btr_dt='00:01:00',
-                run_duration='0040_00:00:00',
+                run_duration='0400_00:00:00',
             ),
         }
         package = 'polaris.tasks.ocean.realistic_global'
@@ -95,7 +95,7 @@ class AnalysisMembers(Task):
             'dt': mesh_info[mesh_name]['dt'],
             'btr_dt': mesh_info[mesh_name]['btr_dt'],
             'output_interval': '0001_00:00:00',
-            'output_freq': '1',
+            'output_freq': '30',
             'output_freq_units': 'days',
         }
         forward_step = Forward(
