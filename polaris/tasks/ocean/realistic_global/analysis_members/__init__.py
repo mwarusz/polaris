@@ -96,7 +96,7 @@ class AnalysisMembers(Task):
             'btr_dt': mesh_info[mesh_name]['btr_dt'],
             'output_interval': '0001_00:00:00',
             'output_freq': '30',
-            'output_freq_units': 'days',
+            'output_freq_units': 'years',
         }
         forward_step = Forward(
             component=component,
