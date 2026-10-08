@@ -30,6 +30,8 @@ ocean:
     config_implicit_constant_bottom_drag_coeff: 1.0e-3
 
 mpas-ocean:
+  submesoscale_eddy_parameterization:
+    config_submesoscale_enable: true
   io:
     config_pio_num_iotasks:  1
     config_pio_stride: 1
@@ -108,6 +110,8 @@ mpas-ocean:
       filename_interval: 00-03-00_00:00:00
 
 Omega:
+  Submeso:
+    Enable: true
   Tendencies:
     TracerDiffTendencyEnable: false
     TracerHyperDiffTendencyEnable: false
@@ -193,8 +197,8 @@ Omega:
       # was inherited from Omega's configs/Default.yml and meant that runs
       # shorter than 100 days -- i.e. all of them -- wrote no restart at
       # all and could not be continued.
-      Freq: 1
-      FreqUnits: Never
+      Freq: 100
+      FreqUnits: years
       UseStartEnd: false
       Contents:
         - Restart
