@@ -96,7 +96,8 @@ class AnalysisMembers(Task):
                 tr_del4='0.0',
             ),
             'RRS18to6v3': dict(
-                dt='00:00:10',
+                dt='00:05:00',
+                btr_dt='00:00:10',
                 run_duration='0001_00:00:00',
                 mom_del2='0.0',
                 tr_del2='10.0',
