@@ -97,9 +97,6 @@ mpas-ocean:
       - rmsGlobalStats
 
 Omega:
-  TimeIntegration:
-    StopTime: 0002-01-01_00:00:00
-    RunDuration: none
   Tracers:
     Debug: []
   Analysis:
